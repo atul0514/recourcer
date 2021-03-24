@@ -39,6 +39,7 @@ export class AddProductComponent implements OnInit {
   clone = false;
   addnew = false;
   changesCounter: number = 0;
+  yearOptions = [];
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -51,6 +52,7 @@ export class AddProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.yearOptions = this.generateYears(1900);
     $(".only_year").datetimepicker({
       format: "yyyy",
       startView: "decade",
@@ -119,10 +121,19 @@ export class AddProductComponent implements OnInit {
     });
     this.productForm.statusChanges.subscribe((status) => {
       this.changesCounter++;
+      //console.log(this.productForm);
       if (this.changesCounter > 3) AuthGuard.blocked = true;
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
+  }
+  generateYears(start: number) {
+    let years = [];
+    const currentYear = new Date().getFullYear();
+    for (let i = start; i < currentYear + 3; i++) {
+      years.push(i);
+    }
+    return years.reverse();
   }
 
   preview(files) {

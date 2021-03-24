@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class AddProjectComponent implements OnInit {
   projectForm: FormGroup;
+  yearOptions = [];
   currentUser: User;
   loading = false;
   loadingData = false;
@@ -52,6 +53,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.yearOptions = this.generateYears(1900);
     this.loadingData = true;
     this.fdv_document = 0;
     this.env_report = 0;
@@ -141,12 +143,20 @@ export class AddProjectComponent implements OnInit {
     });
     // get return url from route parameters or default to '/'
     this.projectForm.statusChanges.subscribe((status) => {
+      //console.log(this.projectForm);
       this.changesCounter++;
       if (this.changesCounter > 4) AuthGuard.blocked = true;
     });
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
   }
-
+  generateYears(start: number) {
+    let years = [];
+    const currentYear = new Date().getFullYear();
+    for (let i = start; i < currentYear + 3; i++) {
+      years.push(i);
+    }
+    return years.reverse();
+  }
   preview(files) {
     console.log(files);
     if (files.length === 0) return;
