@@ -1,6 +1,5 @@
- <!-- Side Navbar -->
- <nav class="side-navbar py-5">
-  
+<!-- Side Navbar -->
+<nav class="side-navbar py-5">
   <ul class="list-unstyled" *ngIf="currentUser.role == 0">
     <li><a routerLink="/users">USERLIST</a></li>
     <li><a routerLink="/user-register">ADD USERS</a></li>
@@ -11,16 +10,40 @@
   </ul>
 
   <ul class="list-unstyled" *ngIf="currentUser.role == 1">
-    <li><a routerLink="/customers">CUSTOMER LIST</a></li>
-    <li><a routerLink="/add-customer">ADD CUSTOMERS</a></li>
+    <li>
+      <a (click)="onNavigation('/customers')" routerLink="/customers"
+        >CUSTOMER LIST</a
+      >
+    </li>
+    <li>
+      <a (click)="onNavigation('/add-customer')" routerLink="/add-customer"
+        >ADD CUSTOMERS</a
+      >
+    </li>
   </ul>
   <ul class="list-unstyled" *ngIf="currentUser.role == 1">
-    <li><a routerLink="/projects">PROJECT LIST</a></li>
-    <li><a routerLink="/add-project">ADD PROJECTS</a></li>
+    <li>
+      <a (click)="onNavigation('/projects')" routerLink="/projects"
+        >PROJECT LIST</a
+      >
+    </li>
+    <li>
+      <a (click)="onNavigation('/add-project')" routerLink="/add-project"
+        >ADD PROJECTS</a
+      >
+    </li>
   </ul>
   <ul class="list-unstyled" *ngIf="currentUser.role == 1">
-    <li><a routerLink="/products">PRODUCT LIST</a></li>
-    <li><a routerLink="/add-product">ADD PRODUCTS</a></li>
+    <li>
+      <a (click)="onNavigation('/products')" routerLink="/products"
+        >PRODUCT LIST</a
+      >
+    </li>
+    <li>
+      <a (click)="onNavigation('/add-product')" routerLink="/add-product"
+        >ADD PRODUCTS</a
+      >
+    </li>
   </ul>
   <ul class="list-unstyled" *ngIf="currentUser.role == 0">
     <li><a routerLink="/categories">PRODUCT CATEGORY</a></li>

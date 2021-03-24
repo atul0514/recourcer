@@ -1,10 +1,10 @@
 <div class="gooey align-items-center" *ngIf="loadingData">
   <span class="dot"></span>
   <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-  </div> 
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 <div class="page">
   <div class="page-content d-flex align-items-stretch">
@@ -12,267 +12,494 @@
     <app-left-nav></app-left-nav>
     <div class="content-inner">
       <!-- Main Navbar-->
-      <app-header></app-header>      
+      <app-header></app-header>
       <!-- Breadcrumb-->
       <div class="breadcrumb-holder container-fluid">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/products">/Product</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink="/products">/Product</a>
+          </li>
         </ul>
       </div>
       <section class="forms">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-                  <form>
-                    <div class="row">
-                      <div class="col-sm-5" style="margin:auto;">
-                        <img src="{{editimgUrl}}" class="img-fluid">
-                        <label for='imgupload'><img src="assets/images/default.jpg" class="img-fluid" *ngIf="!editimgUrl"></label>
+              <form>
+                <div class="row">
+                  <div class="col-sm-5" style="margin: auto">
+                    <img src="{{ editimgUrl }}" class="img-fluid" />
+                    <label for="imgupload"
+                      ><img
+                        src="assets/images/default.jpg"
+                        class="img-fluid"
+                        *ngIf="!editimgUrl"
+                    /></label>
+                  </div>
+                  <div class="col-sm-7">
+                    <br />
+                    <div class="form-fbt">
+                      <div class="form-group text-center">
+                        <a
+                          routerLink="/edit-product/{{ productInfo?.id }}"
+                          class="mr-1 btn btn-default"
+                          >Edit</a
+                        >
                       </div>
-                      <div class="col-sm-7">
-                        <br/>
-                        <div class="form-fbt">
-                          <div class="form-group text-center">
-                            <a routerLink="/edit-product/{{productInfo?.id}}" class="mr-1 btn btn-default">Edit</a>
-                          </div>
-                          <!-- <div class="form-group text-center">
+                      <!-- <div class="form-group text-center">
                             <a routerLink="/add-customer" class="btn btn-secondary">Clone</a>
                           </div> -->
-                          <div class="form-group text-center">
-                            <a routerLink="/add-product" class="btn btn-secondary">Add new</a>
+                      <div class="form-group text-center">
+                        <a routerLink="/add-product" class="btn btn-secondary"
+                          >Add new</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_id" class="label-material"
+                          >PRODUCT ID* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.product_id }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_name" class="label-material"
+                          >PRODUCT NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.product_name }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_id" class="label-material"
+                          >PROJECT NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select class="form-control" disabled>
+                          <option value="">
+                            {{ productInfo?.project.project_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="description" class="label-material"
+                          >DESCRIPTION* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          class="input-material"
+                          value="{{ productInfo?.description }}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="category" class="label-material"
+                          >CATEGORY :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="category"
+                          id="category"
+                          disabled
+                          [ngClass]="{
+                            'is-invalid': submitted && f.category.errors
+                          }"
+                          class="input-material"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let category of categories; index as i"
+                            value="{{ category.id }}"
+                            [selected]="category?.id == productInfo?.category"
+                          >
+                            {{ category.category_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="building_part" class="label-material"
+                          >BUILDING PART :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.building_part }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="quantity" class="label-material"
+                          >QUANTITY :</label
+                        >
+                      </div>
+                      <div class="col-md-8 row">
+                        <div class="col-md-3">
+                          <div class="p-3">
+                            <select
+                              class="input-material"
+                              name="unitqnt"
+                              [ngClass]="{
+                                'is-invalid': submitted && f.unitqnt.errors
+                              }"
+                              class="input-material"
+                            >
+                              <option value="{{ productInfo?.unitqnt }}">
+                                {{ productInfo?.unitqnt }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="p-3">
+                            <input
+                              type="text"
+                              readonly
+                              value="{{ productInfo?.quantity }}"
+                              class="input-material"
+                            />
                           </div>
                         </div>
                       </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_id" class="label-material">PRODUCT ID* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.product_id}}"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_name" class="label-material">PRODUCT NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.product_name}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_id" class="label-material">PROJECT NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <select class="form-control" disabled>
-                              <option value="">{{productInfo?.project.project_name}}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="description" class="label-material">DESCRIPTION* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly class="input-material" value="{{productInfo?.description}}">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="category" class="label-material">CATEGORY :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="category" id="category" disabled [ngClass]="{ 'is-invalid': submitted && f.category.errors }" class="input-material">
-                              <option value="">Select</option>
-                              <option *ngFor="let category of categories; index as i" value="{{category.id}}" [selected]="category?.id == productInfo?.category">{{category.category_name}}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="building_part" class="label-material">BUILDING PART :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly  value="{{productInfo?.building_part}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="quantity" class="label-material">QUANTITY :</label>
-                          </div>
-                          <div class="col-md-8 row ">
-                            <div class="col-md-3">
-                             <div class="p-3">
-                                <select class="input-material" name="unitqnt" [ngClass]="{ 'is-invalid': submitted && f.unitqnt.errors }" class="input-material">
-                                  <option value="{{productInfo?.unitqnt}}">{{productInfo?.unitqnt}}</option>
-                                </select> 
-                            </div></div>
-                            <div class="col-md-3">
-                              <div class="p-3">
-                                <input type="text" readonly value="{{productInfo?.quantity}}" class="input-material">
-                              </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="dimensions" class="label-material"
+                          >DIMENSIONS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="p-3">
+                              <select class="form-control" name="unit" readonly>
+                                <option
+                                  value="Inch"
+                                  [selected]="productInfo?.unit == 'Inch'"
+                                >
+                                  Inch
+                                </option>
+                                <option
+                                  value="Meters"
+                                  [selected]="productInfo?.unit == 'Meters'"
+                                >
+                                  Meters
+                                </option>
+                                <option
+                                  value="CM"
+                                  [selected]="productInfo?.unit == 'CM'"
+                                >
+                                  CM
+                                </option>
+                                <option
+                                  value="Feet"
+                                  [selected]="productInfo?.unit == 'Feet'"
+                                >
+                                  Feet
+                                </option>
+                              </select>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="dimensions" class="label-material">DIMENSIONS :</label>
+                          <div class="col-md-3">
+                            <input
+                              type="text"
+                              readonly
+                              value="{{ productInfo?.height }}"
+                              class="input-material"
+                            />
                           </div>
-                          <div class="col-md-8">
-                            <div class="row">
-                              <div class="col-md-3">
-                                <div class="p-3">
-                                  <select class="form-control" name="unit"  readonly>
-                                    <option value="Inch"   [selected]="productInfo?.unit == 'Inch'">Inch</option> 
-                                    <option value="Meters" [selected]="productInfo?.unit == 'Meters'">Meters</option>
-                                    <option value="CM"  [selected]="productInfo?.unit == 'CM'">CM</option>
-                                    <option value="Feet"  [selected]="productInfo?.unit == 'Feet'">Feet</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <input type="text" readonly value="{{productInfo?.height}}" class="input-material">
-                              </div>
-                              <div class="col-md-3">
-                                <input type="text" readonly value="{{productInfo?.length}}" class="input-material">
-                              </div>
-                              <div class="col-md-3">
-                                <input type="text" readonly value="{{productInfo?.width}}" class="input-material">
-                              </div>
-                            </div>											
+                          <div class="col-md-3">
+                            <input
+                              type="text"
+                              readonly
+                              value="{{ productInfo?.length }}"
+                              class="input-material"
+                            />
                           </div>
-                        </div> <br><br> <br>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="production_year" class="label-material">PRODUCTION YEAR :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.production_year}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="location_building" class="label-material">LOCATION IN BUILDING :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.location_building}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="brand_name" class="label-material">BRAND NAME :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.brand_name}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="documentation" class="label-material">DOCUMENTATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            {{productInfo?.documentation ? 'Yes' : 'No'}}
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_info" class="label-material">PRODUCT INFO :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.product_info}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="color" class="label-material">COLOR :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.color}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="hazardous" class="label-material">HAZARDOUS CONTENT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.hazardous}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="evaluvation" class="label-material">EVALUATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.evaluvation}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="precondition" class="label-material">PRECONDITIONS FOR REUSE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.precondition}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="reuse" class="label-material">POTENTIAL FOR REUSE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.reuse}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="recommendation" class="label-material">RECOMMENDATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.recommendation}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_new_product" class="label-material">PRICE - NEW PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.price_new_product}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="status" class="label-material">STATUS :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <label class="md-check" *ngIf="productInfo?.status == 1">AVAILABLE ONSITE</label>
-                            <label class="md-check" *ngIf="productInfo?.status == 2">AVAILABLE FROM STORAGE</label>
-                            <label class="md-check" *ngIf="productInfo?.status == 3">SOLD</label>
-                            <label class="md-check" *ngIf="productInfo?.status == 4">UNAVAILABLE</label>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_used_product" class="label-material">PRICE - USED PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.price_used_product}}" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_sold_product" class="label-material">PRICE - SOLD PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" readonly value="{{productInfo?.price_sold_product}}" class="input-material">
+                          <div class="col-md-3">
+                            <input
+                              type="text"
+                              readonly
+                              value="{{ productInfo?.width }}"
+                              class="input-material"
+                            />
                           </div>
                         </div>
                       </div>
                     </div>
-                  </form>
-              <hr>
+                    <br /><br />
+                    <br />
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="production_year" class="label-material"
+                          >PRODUCTION YEAR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.production_year }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="location_building" class="label-material"
+                          >LOCATION IN BUILDING :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.location_building }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="brand_name" class="label-material"
+                          >BRAND NAME :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.brand_name }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="documentation" class="label-material"
+                          >DOCUMENTATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        {{ productInfo?.documentation ? "Yes" : "No" }}
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_info" class="label-material"
+                          >PRODUCT INFO :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.product_info }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="color" class="label-material"
+                          >COLOR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.color }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="hazardous" class="label-material"
+                          >HAZARDOUS CONTENT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.hazardous }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="evaluvation" class="label-material"
+                          >EVALUATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.evaluvation }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="precondition" class="label-material"
+                          >PRECONDITIONS FOR REUSE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.precondition }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="reuse" class="label-material"
+                          >POTENTIAL FOR REUSE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.reuse }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="recommendation" class="label-material"
+                          >RECOMMENDATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{ productInfo?.recommendation }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_new_product" class="label-material"
+                          >PRICE - NEW PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{
+                            productInfo?.price_new_product | priceDelimiter: 3
+                          }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="status" class="label-material"
+                          >STATUS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <label class="md-check" *ngIf="productInfo?.status == 1"
+                          >AVAILABLE ONSITE</label
+                        >
+                        <label class="md-check" *ngIf="productInfo?.status == 2"
+                          >AVAILABLE FROM STORAGE</label
+                        >
+                        <label class="md-check" *ngIf="productInfo?.status == 3"
+                          >SOLD</label
+                        >
+                        <label class="md-check" *ngIf="productInfo?.status == 4"
+                          >UNAVAILABLE</label
+                        >
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_used_product" class="label-material"
+                          >PRICE - USED PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{
+                            productInfo?.price_used_product | priceDelimiter: 3
+                          }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_sold_product" class="label-material"
+                          >PRICE - SOLD PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          readonly
+                          value="{{
+                            productInfo?.price_sold_product | priceDelimiter: 3
+                          }}"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <hr />
             </div>
           </div>
         </div>

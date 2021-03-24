@@ -1,18 +1,18 @@
 <div class="gooey align-items-center" *ngIf="loadingData">
   <span class="dot"></span>
   <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-  </div> 
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 <div class="page">
   <div class="page-content d-flex align-items-stretch">
     <!-- Side Navbar -->
     <app-left-nav></app-left-nav>
     <div class="content-inner">
-  <!-- Main Navbar-->
-  <app-header></app-header>
+      <!-- Main Navbar-->
+      <app-header></app-header>
       <!---Search -->
       <section class="forms py-5 bg-white">
         <div class="container-fluid">
@@ -21,7 +21,13 @@
               <p class="pagecrumb-title">/Customers</p>
               <div class="form-group has-search">
                 <span class="fa fa-search form-control-feedback"></span>
-                <input type="text"  name="search" class="form-control" placeholder="Search" (input)="search($event.target.value)">
+                <input
+                  type="text"
+                  name="search"
+                  class="form-control"
+                  placeholder="Search"
+                  (input)="search($event.target.value)"
+                />
               </div>
             </div>
           </div>
@@ -29,55 +35,97 @@
       </section>
       <!-- Forms Section-->
       <section class="forms pb-5">
-          <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-12 main">
-                  <div class="form-group has-search">
-                   <span style="float: right;">
-                    <a (click)="viewType('list')" href='javascript:void(0);'><span class="fa fa-list"></span></a>
-                    &nbsp;
-                    <a (click)="viewType('grid')" href='javascript:void(0);'><span class="fa fa-th"></span></a>
-                  </span>
-                  </div>
-                </div>
-                <div class="col-md-12" *ngIf="listView">
-                    
-                        <table class="table table-hover" datatable [dtOptions]="dtOptions" width="100%">
-                        <thead>
-                            <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>No of Project</th>
-                            <th>No. Of Product</th>
-                            <!-- <th>Country</th> -->
-                            <th>Postal Area</th>
-                            <!-- <th>Action</th> -->
-                            </tr>
-                        </thead>
-                        </table>
-                    </div>
-                <div class="col-md-12 mb-4" *ngIf="gridView">
-                  <div class="">
-                    <div class="">
-                      <div class="row">
-                        <div class="col-md-3 p-2" *ngFor="let customer of customerslists; index as i">
-                          <div class="card p-2">
-                            <a routerLink="/view-customer/{{customer.id}}"><img src="{{image_base_path}}/{{customer.image_path}}" class="card-img-top" alt="..." height="200px" width="auto"></a>
-                            <a href="javascript:void();" routerLink="/view-customer/{{customer.id}}" *ngIf="!customer.image_path"><img src="assets/images/default.jpg" class="card-img-top" alt="..." height="200px" width="auto"></a>
-                            <div class="card-body">
-                            <h5 class="card-title"><a routerLink="/view-customer/{{customer.id}}" style="word-break: break-all;">{{customer.customer_name}}</a></h5>
-                            </div>
-                          </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 main">
+              <div class="form-group has-search">
+                <span style="float: right">
+                  <a (click)="viewType('list')" href="javascript:void(0);"
+                    ><span class="fa fa-list"></span
+                  ></a>
+                  &nbsp;
+                  <a (click)="viewType('grid')" href="javascript:void(0);"
+                    ><span class="fa fa-th"></span
+                  ></a>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="listView">
+              <table
+                class="table table-hover"
+                datatable
+                [dtOptions]="dtOptions"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>No of Project</th>
+                    <th>No. Of Product</th>
+                    <th>Country</th>
+                    <th>Postal Area</th>
+                    <!-- <th>Action</th> -->
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="col-md-12 mb-4" *ngIf="gridView">
+              <div class="">
+                <div class="">
+                  <div class="row">
+                    <div
+                      class="col-md-3 p-2"
+                      *ngFor="let customer of customerslists; index as i"
+                    >
+                      <div class="card p-2">
+                        <a routerLink="/view-customer/{{ customer.id }}"
+                          ><img
+                            src="{{ image_base_path }}/{{
+                              customer.image_path
+                            }}"
+                            class="card-img-top"
+                            alt="..."
+                            height="200px"
+                            width="auto"
+                        /></a>
+                        <a
+                          href="javascript:void();"
+                          routerLink="/view-customer/{{ customer.id }}"
+                          *ngIf="!customer.image_path"
+                          ><img
+                            src="assets/images/default.jpg"
+                            class="card-img-top"
+                            alt="..."
+                            height="200px"
+                            width="auto"
+                        /></a>
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <a
+                              routerLink="/view-customer/{{ customer.id }}"
+                              style="word-break: break-all"
+                              >{{ customer.customer_name }}</a
+                            >
+                          </h5>
                         </div>
                       </div>
-                      <div class="text-center">	
-                        <button (click)="loadMore()" *ngIf="loadmoreflag" class="btn btn-load">Show More</button>		
-                        </div>										
                     </div>
+                  </div>
+                  <div class="text-center">
+                    <button
+                      (click)="loadMore()"
+                      *ngIf="loadmoreflag"
+                      class="btn btn-load"
+                    >
+                      Show More
+                    </button>
                   </div>
                 </div>
               </div>
+            </div>
           </div>
+        </div>
       </section>
       <!-- Page Footer-->
       <app-footer></app-footer>

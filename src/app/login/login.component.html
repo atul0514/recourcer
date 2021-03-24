@@ -1,61 +1,100 @@
-﻿
-<div class="page login-page" style="background: #727272;">
-    <div class="container d-flex align-items-center">
-      <div class="form-holder">
-        <div class="row">
-          
-          <!-- Form Panel    -->
-          <div class="col-lg-6">
-            <div class="form d-flex align-items-center">
-              <div class="content login">
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                  <h4 class="login-heading pb-4">Resourcer Login</h4>
-                  <div class="form-group">
-                    <input type="email" formControlName="username" placeholder="USER ID" class="input-material-login"  [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
-                    
-                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                        <div *ngIf="f.username.errors.required">User ID is required</div>
-                        <div *ngIf="f.username.errors.pattern">Please enter valid email</div>
+﻿<div class="page login-page" style="background: #727272">
+  <div class="container d-flex align-items-center">
+    <div class="form-holder">
+      <div class="row">
+        <!-- Form Panel    -->
+        <div class="col-lg-6">
+          <div class="form d-flex align-items-center">
+            <div class="content login">
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <h4 class="login-heading pb-4">Resourcer Login</h4>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    formControlName="username"
+                    placeholder="USER ID"
+                    class="input-material-login"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                  />
+
+                  <div
+                    *ngIf="submitted && f.username.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.username.errors.required">
+                      User ID is required
+                    </div>
+                    <div *ngIf="f.username.errors.pattern">
+                      Please enter valid email
                     </div>
                   </div>
-                  <div class="form-group">
-                    <input type="password" formControlName="password" placeholder="PASSWORD" class="input-material-login" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
-                    
-                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+                <div class="form-group">
+                  <input
+                    type="password"
+                    formControlName="password"
+                    placeholder="PASSWORD"
+                    class="input-material-login"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                  />
+
+                  <div
+                    *ngIf="submitted && f.password.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.password.errors.required">
+                      Password is required
                     </div>
                   </div>
-                  <input type="submit" [disabled]="loading" class="btn btn-login btn-fluid" value="Log in">
-                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    <p class="small py-1 text-white"><a routerLink="/forget-password" class="forgot-pass text-center">Forgot Password?</a></p>
-                    <div *ngIf="error" class="alert alert-warning mt-3 mb-0">{{error}}</div>
-                </form>
-              
-              </div>
+                </div>
+                <input
+                  type="submit"
+                  [disabled]="loading"
+                  class="btn btn-login btn-fluid"
+                  value="Log in"
+                />
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm mr-1"
+                ></span>
+                <p class="small py-1 text-white">
+                  <a
+                    routerLink="/forget-password"
+                    class="forgot-pass text-center"
+                    >Forgot Password?</a
+                  >
+                </p>
+                <div *ngIf="error" class="alert alert-warning mt-3 mb-0">
+                  {{ error }}
+                </div>
+              </form>
             </div>
           </div>
-          <!-- Logo & Information Panel-->
-          <div class="col-lg-6">
-            <div class="info d-flex align-items-center">
-              <div class="content">
-                <div class="logo">
-                  <h1 class="text-dark">Resourcer</h1>
-                </div>
-                <p class="text-dark">Fill Your details to login.</p>
+        </div>
+        <!-- Logo & Information Panel-->
+        <div class="col-lg-6">
+          <div class="info d-flex align-items-center">
+            <div class="content">
+              <div class="logo">
+                <h1 class="text-dark">Resourcer</h1>
               </div>
+              <p class="text-dark">Fill Your details to login.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <footer class="copyrights">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <p class="small">CopyRights - <a href="#" class="external">Digits AS</a>, Norway <br> Org. number 925 386 022</p>
-        </div>
+</div>
+<footer class="copyrights">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p class="small">
+          CopyRights - <a href="#" class="external">Digits AS</a>, Norway <br />
+          Org. number 925 386 022
+        </p>
       </div>
-
     </div>
-  </footer>
+  </div>
+</footer>
