@@ -1,19 +1,18 @@
 <div class="gooey align-items-center" *ngIf="loadingData">
   <span class="dot"></span>
   <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-  </div> 
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 <div class="page">
-
   <div class="page-content d-flex align-items-stretch">
     <!-- Side Navbar -->
     <app-left-nav></app-left-nav>
-      <div class="content-inner">
-  <!-- Main Navbar-->
-  <app-header></app-header>      
+    <div class="content-inner">
+      <!-- Main Navbar-->
+      <app-header></app-header>
       <!-- Forms Section-->
       <section class="forms bg-white py-5">
         <div class="container-fluid">
@@ -22,235 +21,441 @@
               <p class="breadcrumb-heading">/Products</p>
               <div class="form-group has-search" id="searchDiv">
                 <span class="fa fa-search form-control-feedback"></span>
-                  <input type="text" name="search" class="form-control" placeholder="Search" (input)="search($event.target.value)">
+                <input
+                  type="text"
+                  name="search"
+                  class="form-control"
+                  placeholder="Search"
+                  (input)="search($event.target.value)"
+                />
+
+                <p class="searchkey-paras" *ngIf="showSearchKeys">
+                  Results for:
+                  <small
+                    *ngIf="customer_filter_text.length > 0"
+                    class="search-texts"
+                    >customers:{{ customer_filter_text.join(",") }}</small
+                  >
+                  <small
+                    *ngIf="project_filter_text.length > 0"
+                    class="search-texts"
+                    >projects:{{ project_filter_text.join(",") }}
+                  </small>
+                  <small
+                    *ngIf="category_filter_text.length > 0"
+                    class="search-texts"
+                    >category:{{ category_filter_text.join(",") }}</small
+                  ><small
+                    *ngIf="status_filter_text.length > 0"
+                    class="search-texts"
+                    >status:{{ status_filter_text.join(",") }}</small
+                  >
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </section>      
+      </section>
       <section class="forms pb-5">
-          <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-12 main" *ngIf="!productInfo">
-                  <div class="form-group has-search">
-                   <span style="float: right;" *ngIf="totalrecord">
-                     Total {{filter_record}} of {{totalrecord}}
-                  </span>
-                  </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 main" *ngIf="!productInfo">
+              <div class="form-group has-search">
+                <span style="float: right" *ngIf="totalrecord">
+                  Total {{ filter_record }} of {{ totalrecord }}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12 main" *ngIf="!productInfo">
+              <div class="form-group has-search">
+                <span style="float: right">
+                  <a
+                    (click)="pdf()"
+                    href="javascript:void(0);"
+                    *ngIf="filterFlag"
+                    ><span class="material-icons">picture_as_pdf</span></a
+                  >
+                  &nbsp;
+                  <a (click)="viewType('list')" href="javascript:void(0);"
+                    ><span class="material-icons">list</span></a
+                  >
+                  &nbsp;
+                  <a
+                    (click)="filter()"
+                    href="javascript:void(0);"
+                    *ngIf="filterFlag"
+                    ><strong>F</strong></a
+                  >
+                  &nbsp;
+                  <a (click)="viewType('grid')" href="javascript:void(0);"
+                    ><span class="material-icons">apps</span></a
+                  >
+                </span>
+              </div>
+            </div>
+            <div class="mydiv p-3">
+              <span class="close"
+                ><a (click)="closeFilter()" href="javascript:void(0);"
+                  ><i class="fa fa-times" aria-hidden="true"></i></a
+              ></span>
+              <div class="panel-body py-4">
+                <div class="panel-heading">
+                  <h6 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse0">
+                      <i
+                        class="indicator fa fa-caret-down"
+                        aria-hidden="true"
+                      ></i>
+                      Customers ({{ customer_count }})
+                    </a>
+                  </h6>
                 </div>
-                <div class="col-md-12 main" *ngIf="!productInfo">
-                  <div class="form-group has-search">
-                   <span style="float: right;">
-                    <a (click)='pdf()' href='javascript:void(0);' *ngIf="filterFlag"><span class="material-icons">picture_as_pdf</span></a>
-                    &nbsp;
-                    <a (click)="viewType('list')" href='javascript:void(0);'><span class="material-icons">list</span></a>
-                    &nbsp;
-                    <a (click)='filter()' href='javascript:void(0);' *ngIf="filterFlag"><strong>F</strong></a>
-                    &nbsp;
-                    <a (click)="viewType('grid')" href='javascript:void(0);'><span class="material-icons">apps</span></a>
-                  </span>
-                  </div>
-                </div>
-                <div class='mydiv p-3'>
-                  <span class="close"><a (click)="closeFilter()" href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></span>
-                    <div class="panel-body py-4" >
-                      <div class="panel-heading" >
-                        <h6 class="panel-title">
-                          <a data-toggle="collapse" href="#collapse0">
-                            <i class="indicator fa fa-caret-down" aria-hidden="true"></i> Customers ({{customer_count}})  
-                          </a>
-                        </h6>
-                      </div>
-                      <div id="collapse0" class="panel-collapse collapse">
-                        <ul class="list-group">
-                         <!--- <li class="list-group-item px-2">
+                <div id="collapse0" class="panel-collapse collapse">
+                  <ul class="list-group">
+                    <!--- <li class="list-group-item px-2">
                             <input type="checkbox" name="customerselectall" value="1" (click)="custmerSelect($event)"> Select All</li> --->
-                          <li class="list-group-item"  *ngFor="let customer of customers; index as i">
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox" name="customers" [(ngModel)]="customer.isChecked" value="{{customer.id}}" (click)="showProject($event)">
-                                {{customer.customer_name}}
-                              </label>
-                            </div>
-                          </li>
-                        </ul>
+                    <li
+                      class="list-group-item"
+                      *ngFor="let customer of customers; index as i"
+                    >
+                      <div class="checkbox">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="customers"
+                            [(ngModel)]="customer.isChecked"
+                            value="{{ customer.id }}"
+                            (click)="showProject($event)"
+                          />
+                          {{ customer.customer_name }}
+                        </label>
                       </div>
-                      <div class="panel-heading py-2" >
-                        <h6 class="panel-title">
-                          <a data-toggle="collapse" href="#collapse01">
-                            <i class="indicator fa fa-caret-down" aria-hidden="true"></i>Projects ({{project_count}})
-                          </a>
-                        </h6>
-                      </div>
-                      <div id="collapse01" class="panel-collapse collapse" >
-                        <ul class="list-group ">
-                          <li class="list-group-item">
-                            <input type="text" placeholder="Search" [(ngModel)]="term" />
-                          </li>
-                        <!--  <li class="list-group-item px-2"><input type="checkbox" name="projectselectall" value="1" (click)="projectSelect($event)"> Select All</li> -->
-                          
-                          <li class="list-group-item" *ngFor="let eachproject of filterProject | filter:term">
-                            <div class="checkbox">
-                             
-                              <label>
-                                <input type="checkbox"  name="projects" value="{{eachproject.id}}" [(ngModel)]="eachproject.isChecked" (click)="addProject($event)">
-                                {{eachproject.project_name}}
-                              </label>
-                            </div>
-                          </li>
-                          
-                        </ul>
-                      </div>
-                      <div class="panel-heading py-2" >
-                        <h6 class="panel-title">
-                          <a data-toggle="collapse" href="#collapse02">
-                            <i class="indicator fa fa-caret-down" aria-hidden="true"></i>Category ({{product_category_count}})
-                          </a>
-                        </h6>
-                      </div>
-                      <div id="collapse02" class="panel-collapse collapse" >
-                        <ul class="list-group ">
-                   <!--    <li class="list-group-item px-2"><input type="checkbox" name="categoryselectall" value="1"  (click)="categorySelect($event)"> Select All</li>   -->                      
-                          <li class="list-group-item" *ngFor="let eachcategory of product_category; index as i">
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox"  name="category" value="{{eachcategory.id}}" [(ngModel)]="eachcategory.isChecked" (click)="addCategory($event)">
-                                {{eachcategory.category_name}}
-                              </label>
-                            </div>
-                          </li>                         
-                        </ul>
-                      </div>
-                      <div class="panel-heading py-2" >
-                        <h6 class="panel-title">
-                          <a data-toggle="collapse" href="#collapse03">
-                            <i class="indicator fa fa-caret-down" aria-hidden="true"></i>Status
-                          </a>
-                        </h6>
-                      </div>
-                      <div id="collapse03" class="panel-collapse collapse" >
-                        <ul class="list-group">
-                          <li class="list-group-item" *ngFor="let statusvalue of status_types; index as i">
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox" name="status" value="{{statusvalue.id}}" [(ngModel)]="statusvalue.isChecked" (click)="addStatus($event)">
-                                {{statusvalue.name}}
-                              </label>
-                            </div>
-                          </li>                       
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6 px-2">
-                        <div class="form-group">
-                          <a (click)="closeFilter()" href="javascript:void(0);"><input type="button" name="apply" (click)= "applyFilter()" value="Apply Filter" class="btn btn-default btn-block btn-sm"></a>
-                        </div>
-                      </div>
-                      <div class="col-md-6 px-2">
-                        <div class="form-group">
-                          <input type="button" name="reset" (click)="resetFilter()" value="Reset Filter" class="btn btn-default btn-block btn-sm">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <div class="col-md-12" *ngIf="!productInfo && listView">
-
-                        <table class="table" datatable [dtOptions]="dtOptions" width="100%">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="round">
-                                <input type="checkbox" id="checkbox" (change)="onSelectHead($event)"/>
-                                <label for="checkbox"></label>
-                              </div>
-                              </th>
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Qty.</th>
-                            <th>Dimensions</th>
-                            <th>Discription</th>
-                            <th>Status</th> 
-                            <!-- <th>Action</th> -->
-                          </tr>
-                        </thead>
-                        </table>
-                    
+                    </li>
+                  </ul>
                 </div>
-                <div class="col-md-12 mb-4" *ngIf="!productInfo && gridView">
-                  <div class="">
-                    <div class="">
-                      <div class="row">
-                        <div class="col-md-3 p-2" *ngFor="let product of productslist; index as i">
-                          <div class="card p-2 text-center" style="border-radius: 10px;">
-                            <a href="javascript:void();" routerLink="/view-product/{{product?.id}}" *ngIf="product.product_image"><img src="{{image_base_path}}/{{product.product_image}}"  class="card-img-top" alt="..." height="227px" width="283px" style="border-radius: 10px;"></a>
-                            <a href="javascript:void();" routerLink="/view-product/{{product?.id}}" *ngIf="!product.product_image"><img src="assets/images/default.jpg" class="card-img-top" alt="..." height="227px" width="283px" style="border-radius: 10px;"></a>
-                          </div> 
-                          <div class="p-2">
-                            <h5 class="card-title"><a href="javascript:void();" routerLink="/view-product/{{product?.id}}" style="word-break: break-all;">{{product.product_name}}</a></h5>
-                          
-                          </div>
-                        </div>
+                <div class="panel-heading py-2">
+                  <h6 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse01">
+                      <i
+                        class="indicator fa fa-caret-down"
+                        aria-hidden="true"
+                      ></i
+                      >Projects ({{ project_count }})
+                    </a>
+                  </h6>
+                </div>
+                <div id="collapse01" class="panel-collapse collapse">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        [(ngModel)]="term"
+                      />
+                    </li>
+                    <!--  <li class="list-group-item px-2"><input type="checkbox" name="projectselectall" value="1" (click)="projectSelect($event)"> Select All</li> -->
+
+                    <li
+                      class="list-group-item"
+                      *ngFor="let eachproject of filterProject | filter: term"
+                    >
+                      <div class="checkbox">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="projects"
+                            value="{{ eachproject.id }}"
+                            [(ngModel)]="eachproject.isChecked"
+                            (click)="addProject($event)"
+                          />
+                          {{ eachproject.project_name }}
+                        </label>
                       </div>
-                      <div class="text-center">	
-                      <button (click)="loadMore()" *ngIf="loadmoreflag" class="btn btn-load">Show More</button>		
-                      </div>				
-                    </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="panel-heading py-2">
+                  <h6 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse02">
+                      <i
+                        class="indicator fa fa-caret-down"
+                        aria-hidden="true"
+                      ></i
+                      >Category ({{ product_category_count }})
+                    </a>
+                  </h6>
+                </div>
+                <div id="collapse02" class="panel-collapse collapse">
+                  <ul class="list-group">
+                    <!--    <li class="list-group-item px-2"><input type="checkbox" name="categoryselectall" value="1"  (click)="categorySelect($event)"> Select All</li>   -->
+                    <li
+                      class="list-group-item"
+                      *ngFor="let eachcategory of product_category; index as i"
+                    >
+                      <div class="checkbox">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="category"
+                            value="{{ eachcategory.id }}"
+                            [(ngModel)]="eachcategory.isChecked"
+                            (click)="addCategory($event)"
+                          />
+                          {{ eachcategory.category_name }}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="panel-heading py-2">
+                  <h6 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse03">
+                      <i
+                        class="indicator fa fa-caret-down"
+                        aria-hidden="true"
+                      ></i
+                      >Status
+                    </a>
+                  </h6>
+                </div>
+                <div id="collapse03" class="panel-collapse collapse">
+                  <ul class="list-group">
+                    <li
+                      class="list-group-item"
+                      *ngFor="let statusvalue of status_types; index as i"
+                    >
+                      <div class="checkbox">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="status"
+                            value="{{ statusvalue.id }}"
+                            [(ngModel)]="statusvalue.isChecked"
+                            (click)="addStatus($event)"
+                          />
+                          {{ statusvalue.name }}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 px-2">
+                  <div class="form-group">
+                    <a (click)="closeFilter()" href="javascript:void(0);"
+                      ><input
+                        type="button"
+                        name="apply"
+                        (click)="applyFilter()"
+                        value="Apply Filter"
+                        class="btn btn-default btn-block btn-sm"
+                    /></a>
+                  </div>
+                </div>
+                <div class="col-md-6 px-2">
+                  <div class="form-group">
+                    <input
+                      type="button"
+                      name="reset"
+                      (click)="resetFilter()"
+                      value="Reset Filter"
+                      class="btn btn-default btn-block btn-sm"
+                    />
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-md-12" *ngIf="!productInfo && listView">
+              <table
+                class="table"
+                datatable
+                [dtOptions]="dtOptions"
+                width="100%"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="round">
+                        <input
+                          type="checkbox"
+                          id="checkbox"
+                          (change)="onSelectHead($event)"
+                        />
+                        <label for="checkbox"></label>
+                      </div>
+                    </th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Qty.</th>
+                    <th>Dimensions</th>
+                    <th>Discription</th>
+                    <th>Status</th>
+                    <!-- <th>Action</th> -->
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="col-md-12 mb-4" *ngIf="!productInfo && gridView">
+              <div class="">
+                <div class="">
+                  <div class="row">
+                    <div
+                      class="col-md-3 p-2"
+                      *ngFor="let product of productslist; index as i"
+                    >
+                      <div
+                        class="card p-2 text-center"
+                        style="border-radius: 10px"
+                      >
+                        <a
+                          href="javascript:void();"
+                          routerLink="/view-product/{{ product?.id }}"
+                          *ngIf="product.product_image"
+                          ><img
+                            src="{{ image_base_path }}/{{
+                              product.product_image
+                            }}"
+                            class="card-img-top"
+                            alt="..."
+                            height="227px"
+                            width="283px"
+                            style="border-radius: 10px"
+                        /></a>
+                        <a
+                          href="javascript:void();"
+                          routerLink="/view-product/{{ product?.id }}"
+                          *ngIf="!product.product_image"
+                          ><img
+                            src="assets/images/default.jpg"
+                            class="card-img-top"
+                            alt="..."
+                            height="227px"
+                            width="283px"
+                            style="border-radius: 10px"
+                        /></a>
+                      </div>
+                      <div class="p-2">
+                        <h5 class="card-title">
+                          <a
+                            href="javascript:void();"
+                            routerLink="/view-product/{{ product?.id }}"
+                            style="word-break: break-all"
+                            >{{ product.product_name }}</a
+                          >
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button
+                      (click)="loadMore()"
+                      *ngIf="loadmoreflag"
+                      class="btn btn-load"
+                    >
+                      Show More
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
       </section>
       <!-- Page Footer-->
       <app-footer></app-footer>
     </div>
   </div>
 </div>
-<div class="modal fade" id="PDFModal" tabindex="-1" role="dialog" aria-labelledby="PDFModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="PDFModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="PDFModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="form-group row">
-          <div class="col-sm-9">         
-              <!-- <form [formGroup]="productPDFCategory"> -->
-                <div class="form-group row" style="margin-left: 15px;">    
-                  <label for="Name" class="md-check">Format</label>&nbsp;&nbsp;
-                  <label for="Name" class="md-check">PDF</label>
-                </div>
-                <div class="form-group row" style="margin-left: 15px;">
-                  <label class="md-check">
-                    <input type="radio" [value]="1"  [(ngModel)]="pdftype" name="pdftype">
-                    Standard
-                  </label>&nbsp;&nbsp;
-                  <label class="md-check">
-                    <input type="radio" [value]="0" disabled [(ngModel)]="pdftype" name="pdftype">     
-                    Advanced
-                  </label>
-                </div>
-                <div class="form-group row" style="margin-left: 15px;">
-                  <label class="md-check">
-                    <input type="radio" [value]="1" disabled [(ngModel)]="pdfdownloadFormate" name="pdfdownloadFormate">
-                    Email
-                  </label>&nbsp;&nbsp;
-                  <label class="md-check">
-                    <input type="radio" [value]="2" [(ngModel)]="pdfdownloadFormate" name="pdfdownloadFormate">     
-                    Download
-                  </label>
-                </div>
-                <div class="form-group-material">
-                  <input [disabled]="loading" type="button" name="submit" value="Generate" (click)="genratePDF()" class="btn btn-secondary">
-                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                </div>
-              <!-- </form> -->
+          <div class="col-sm-9">
+            <!-- <form [formGroup]="productPDFCategory"> -->
+            <div class="form-group row" style="margin-left: 15px">
+              <label for="Name" class="md-check">Format</label>&nbsp;&nbsp;
+              <label for="Name" class="md-check">PDF</label>
             </div>
+            <div class="form-group row" style="margin-left: 15px">
+              <label class="md-check">
+                <input
+                  type="radio"
+                  [value]="1"
+                  [(ngModel)]="pdftype"
+                  name="pdftype"
+                />
+                Standard </label
+              >&nbsp;&nbsp;
+              <label class="md-check">
+                <input
+                  type="radio"
+                  [value]="0"
+                  disabled
+                  [(ngModel)]="pdftype"
+                  name="pdftype"
+                />
+                Advanced
+              </label>
+            </div>
+            <div class="form-group row" style="margin-left: 15px">
+              <label class="md-check">
+                <input
+                  type="radio"
+                  [value]="1"
+                  disabled
+                  [(ngModel)]="pdfdownloadFormate"
+                  name="pdfdownloadFormate"
+                />
+                Email </label
+              >&nbsp;&nbsp;
+              <label class="md-check">
+                <input
+                  type="radio"
+                  [value]="2"
+                  [(ngModel)]="pdfdownloadFormate"
+                  name="pdfdownloadFormate"
+                />
+                Download
+              </label>
+            </div>
+            <div class="form-group-material">
+              <input
+                [disabled]="loading"
+                type="button"
+                name="submit"
+                value="Generate"
+                (click)="genratePDF()"
+                class="btn btn-secondary"
+              />
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+            </div>
+            <!-- </form> -->
           </div>
+        </div>
       </div>
     </div>
   </div>

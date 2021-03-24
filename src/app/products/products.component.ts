@@ -48,6 +48,12 @@ export class ProductsComponent implements OnDestroy, OnInit {
   project_filter = [];
   status_filter = [];
   category_filter = [];
+
+  customer_filter_text = [];
+  project_filter_text = [];
+  status_filter_text = [];
+  category_filter_text = [];
+  showSearchKeys: boolean = false;
   product_category: any;
   product_category_count: any;
   status_types: any;
@@ -214,6 +220,16 @@ export class ProductsComponent implements OnDestroy, OnInit {
   onSelectHead() {
     this.selectAll = !this.selectAll;
     $("input[type=checkbox]").prop("checked", this.selectAll);
+    if (this.selectAll) {
+      this.products.forEach((product) => {
+        this.PDFProduct.push(product.id);
+        this.PDFProductProject.push(product.project_id);
+      });
+      console.log(this.PDFProduct);
+    } else {
+      this.PDFProduct = [];
+      this.PDFProductProject = [];
+    }
   }
   viewType(type) {
     if (type == "list") {
@@ -289,12 +305,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
       });
   }
 
-  ngOnDestroy(): void {
-    // We remove the last function in the global ext search array so we do not add the fn each time the component is drawn
-    // /!\ This is not the ideal solution as other components may add other search function in this array, so be careful when
-    // handling this global variable
-    // $.fn['dataTable'].ext.search.pop();
-  }
+  ngOnDestroy(): void {}
 
   filter() {
     var $slider = $(".mydiv");
@@ -311,18 +322,14 @@ export class ProductsComponent implements OnDestroy, OnInit {
   }
 
   showProject(event) {
+    this.showSearchKeys = false;
     if (event.target.checked) {
-      console.log("add");
-      //console.log(this.projects);
-      //console.log(this.projects[event.target.value]);
       this.projects[event.target.value].forEach((element) => {
-        //console.log(element);
         this.filterProject.push(element);
       });
       this.customer_filter.push(event.target.value);
-      console.log(this.filterProject);
+      this.customer_filter_text.push(event.path[1].innerText);
     } else {
-      console.log("remove");
       console.log(event.target.value);
       this.filterProject = this.filterProject.filter(function (eachdata) {
         return eachdata.customer_id != event.target.value;
@@ -330,7 +337,12 @@ export class ProductsComponent implements OnDestroy, OnInit {
       this.customer_filter = this.customer_filter.filter(function (s) {
         return s != event.target.value;
       });
-      console.log(this.filterProject);
+      this.customer_filter_text = this.customer_filter_text.filter(function (
+        s
+      ) {
+        return s != event.path[1].innerText;
+      });
+      //console.log(this.filterProject);
     }
   }
 
@@ -339,6 +351,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
       for (let i = 0; i < this.customers.length; i++) {
         this.customers[i].isChecked = 1;
         this.customer_filter.push(this.customers[i].id);
+
         console.log(this.customers[i].id);
         console.log(this.projects);
         if (this.projects[this.customers[i].id]) {
@@ -362,6 +375,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
       for (let i = 0; i < this.filterProject.length; i++) {
         this.filterProject[i].isChecked = 1;
         this.project_filter.push(this.filterProject[i].id);
+        this.project_filter_text.push(event.path[1].innerText);
       }
     } else {
       for (let i = 0; i < this.filterProject.length; i++) {
@@ -370,6 +384,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
       }
     }
   }
+
   categorySelect(event) {
     if (event.target.checked) {
       for (let i = 0; i < this.product_category.length; i++) {
@@ -384,34 +399,57 @@ export class ProductsComponent implements OnDestroy, OnInit {
     }
   }
   addProject(event) {
+    this.showSearchKeys = false;
     if (event.target.checked) {
       this.project_filter.push(event.target.value);
+      this.project_filter_text.push(event.path[1].innerText);
+      console.log(event);
     } else {
       this.project_filter = this.project_filter.filter(function (s) {
         return s !== event.target.value;
+      });
+      this.project_filter_text = this.project_filter_text.filter(function (s) {
+        return s != event.path[1].innerText;
       });
     }
   }
 
   addStatus(event) {
+    this.showSearchKeys = false;
     if (event.target.checked) {
       this.status_filter.push(event.target.value);
+      this.status_filter_text.push(event.path[1].innerText);
     } else {
       this.status_filter = this.status_filter.filter(function (s) {
         return s !== event.target.value;
       });
+      this.status_filter_text = this.status_filter_text.filter(function (s) {
+        return s != event.path[1].innerText;
+      });
     }
   }
   addCategory(event) {
+    this.showSearchKeys = false;
     if (event.target.checked) {
       this.category_filter.push(event.target.value);
+      this.category_filter_text.push(event.path[1].innerText);
     } else {
       this.category_filter = this.category_filter.filter(function (s) {
         return s !== event.target.value;
       });
+      this.category_filter_text = this.category_filter_text.filter(function (
+        s
+      ) {
+        return s != event.path[1].innerText;
+      });
     }
   }
   applyFilter() {
+    console.log(this.customer_filter);
+    console.log(this.project_filter);
+    console.log(this.status_filter);
+    console.log(this.category_filter);
+    this.showSearchKeys = true;
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       //dtInstance.search(value);
       dtInstance.draw();
@@ -423,6 +461,11 @@ export class ProductsComponent implements OnDestroy, OnInit {
     this.project_filter = [];
     this.status_filter = [];
     this.category_filter = [];
+    this.customer_filter_text = [];
+    this.project_filter_text = [];
+    this.status_filter_text = [];
+    this.category_filter_text = [];
+    this.showSearchKeys = false;
     for (let i = 0; i < this.customers.length; i++) {
       this.customers[i].isChecked = 0;
     }
