@@ -143,7 +143,7 @@ export class AddProjectComponent implements OnInit {
     });
     // get return url from route parameters or default to '/'
     this.projectForm.statusChanges.subscribe((status) => {
-      //console.log(this.projectForm);
+      console.log(this.projectForm);
       this.changesCounter++;
       if (this.changesCounter > 4) AuthGuard.blocked = true;
     });

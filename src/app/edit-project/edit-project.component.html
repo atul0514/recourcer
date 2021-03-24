@@ -1,13 +1,12 @@
 <div class="gooey align-items-center" *ngIf="loadingData">
   <span class="dot"></span>
   <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-  </div> 
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 <div class="page">
-
   <div class="page-content d-flex align-items-stretch">
     <!-- Side Navbar -->
     <app-left-nav></app-left-nav>
@@ -17,8 +16,12 @@
       <!-- Breadcrumb-->
       <div class="breadcrumb-holder container-fluid">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/projects">Project list</a></li>
-          <li class="breadcrumb-item"><a routerLink="/view-project/{{editId}}">{{editId}}</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink="/projects">Project list</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/view-project/{{ editId }}">{{ editId }}</a>
+          </li>
           <li class="breadcrumb-item active">Edit</li>
         </ul>
       </div>
@@ -26,426 +29,1023 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-              
-                  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-                    <div class="row">
-                      <div class="col-sm-5" style="margin:auto;">
-                        <!-- <input type="file" name="photo" id="photo" formControlName="photo"> -->
-                        <label for='imgupload'><img src="assets/images/default.jpg" class="img-fluid" *ngIf="imgURL== '' && editimgUrl == ''">
-                          <img src="{{editimgUrl}}" class="img-fluid" *ngIf="imgURL== '' && !editimgUrl == ''"></label>
-                        <span style="color:red;" *ngIf="message">{{message}}</span>
-                        <input type="file" id="imgupload" accept='image/*' (change)="preview($event.target.files)"
-                          style="display:none" />
-                        <br /> <br />
-                        <img [src]="imgURL" height="200" *ngIf="imgURL">
+              <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-sm-5" style="margin: auto">
+                    <!-- <input type="file" name="photo" id="photo" formControlName="photo"> -->
+                    <label for="imgupload"
+                      ><img
+                        src="assets/images/default.jpg"
+                        class="img-fluid"
+                        *ngIf="imgURL == '' && editimgUrl == ''" />
+                      <img
+                        src="{{ editimgUrl }}"
+                        class="img-fluid"
+                        *ngIf="imgURL == '' && !editimgUrl == ''"
+                    /></label>
+                    <span style="color: red" *ngIf="message">{{
+                      message
+                    }}</span>
+                    <input
+                      type="file"
+                      id="imgupload"
+                      accept="image/*"
+                      (change)="preview($event.target.files)"
+                      style="display: none"
+                    />
+                    <br />
+                    <br />
+                    <img [src]="imgURL" height="200" *ngIf="imgURL" />
+                  </div>
+                  <div class="col-sm-7">
+                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">
+                      {{ error }}
+                    </div>
+                    <br />
+                    <div class="form-fbt">
+                      <div class="form-group text-center">
+                        <input
+                          type="submit"
+                          name="submit"
+                          value="Update"
+                          class="btn btn-default"
+                        />
                       </div>
-                      <div class="col-sm-7">
-                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-                        <br />
-                        <div class="form-fbt">
-                          <div class="form-group text-center">
-                            <input type="submit" name="submit" value="Update" class="btn btn-default">
-                          </div>
-                          <div class="form-group text-center">
-                            
-                            <label class="btn btn-secondary"  data-toggle="modal" data-target="#exampleModal">Add Files</label>
-                            <!-- <input type="file" id="fileupload" name="fileupload" (change)="addfiles($event.target.files)" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" multiple style="display:none" /> -->
-                          </div>
-                          <!-- <div class="form-group" *ngFor="let file of filesmulti; index as i">
+                      <div class="form-group text-center">
+                        <label
+                          class="btn btn-secondary"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                          >Add Files</label
+                        >
+                        <!-- <input type="file" id="fileupload" name="fileupload" (change)="addfiles($event.target.files)" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" multiple style="display:none" /> -->
+                      </div>
+                      <!-- <div class="form-group" *ngFor="let file of filesmulti; index as i">
                             {{file.name}}
                             <div class="progress">
                               <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                           </div> -->
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_name" class="label-material"
+                          >PROJECT NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="project_name"
+                          name="project_name"
+                          maxlength="50"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.project_name.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.project_name.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.project_name.errors.required">
+                            Project Name is required
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_name" class="label-material">PROJECT NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="project_name" name="project_name" maxlength="50" [ngClass]="{ 'is-invalid': submitted && f.project_name.errors }" class="input-material">
-                            <div *ngIf="submitted && f.project_name.errors" class="invalid-feedback">
-                              <div *ngIf="f.project_name.errors.required">Project Name is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="customer" class="label-material">CUSTOMER NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="customer" formControlName="customer" [ngClass]="{ 'is-invalid': submitted && f.customer.errors }">
-                                <option value="">Select</option>
-                                <option *ngFor="let customer of customers; index as i" value="{{customer.id}}" [selected]="true">{{customer.customer_name}}</option>   
-                            </select>
-                            <div *ngIf="submitted && f.customer.errors" class="invalid-feedback">
-                                <div *ngIf="f.customer.errors.required">Customer is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_address" class="label-material">PROJECT ADDRESS :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="project_address" name="project_address" maxlength="250"  class="input-material">
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="customer" class="label-material"
+                          >CUSTOMER NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="customer"
+                          formControlName="customer"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.customer.errors
+                          }"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let customer of customers; index as i"
+                            value="{{ customer.id }}"
+                            [selected]="true"
+                          >
+                            {{ customer.customer_name }}
+                          </option>
+                        </select>
+                        <div
+                          *ngIf="submitted && f.customer.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.customer.errors.required">
+                            Customer is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_address" class="label-material">POSTAL CODE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="postal_code" name="postal_code"  class="input-material" [ngClass]="{ 'is-invalid': submitted && f.postal_code.errors }">
-                            <div *ngIf="submitted && f.postal_code.errors" class="invalid-feedback">
-                              <div *ngIf="f.postal_code.errors.pattern">Please enter valid postal code</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_address" class="label-material">POSTAL AREA :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="postal_area" name="postal_area" maxlength="100" class="input-material">
-                          </div>
-                        </div>
-                        <h3>PROJECT MANAGER DETAILS</h3>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_mang_name " class="label-material margin-left">NAME :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="project_mang_name" maxlength="50" name="project_mang_name"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_address" class="label-material margin-left">MOBILE NO. :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="project_mang_mobile" maxlength="12" name="project_mang_mobile" [ngClass]="{ 'is-invalid': submitted && f.project_mang_mobile.errors }"   class="input-material">
-                            <div *ngIf="submitted && f.project_mang_mobile.errors" class="invalid-feedback">
-                              <div *ngIf="f.project_mang_mobile.errors.pattern">Please enter valid mobile number</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_mang_email" class="label-material margin-left">EMAIL ID. :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="project_mang_email" name="project_mang_email"  [ngClass]="{ 'is-invalid': submitted && f.project_mang_email.errors }"  class="input-material">
-                            <div *ngIf="submitted && f.project_mang_email.errors" class="invalid-feedback">
-                              <div *ngIf="f.project_mang_email.errors.pattern">Please enter valid email</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_address" class="label-material"
+                          >PROJECT ADDRESS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="project_address"
+                          name="project_address"
+                          maxlength="250"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_address" class="label-material"
+                          >POSTAL CODE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="postal_code"
+                          name="postal_code"
+                          class="input-material"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.postal_code.errors
+                          }"
+                        />
+                        <div
+                          *ngIf="submitted && f.postal_code.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.postal_code.errors.pattern">
+                            Please enter valid postal code
                           </div>
                         </div>
-                        <h3>ONSITE CONTACT DETAILS</h3>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="onsite_name" class="label-material margin-left">NAME :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="onsite_name" name="onsite_name" maxlength="50"  class="input-material">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_address" class="label-material"
+                          >POSTAL AREA :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="postal_area"
+                          name="postal_area"
+                          maxlength="100"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <h3>PROJECT MANAGER DETAILS</h3>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="project_mang_name "
+                          class="label-material margin-left"
+                          >NAME :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="project_mang_name"
+                          maxlength="50"
+                          name="project_mang_name"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="project_address"
+                          class="label-material margin-left"
+                          >MOBILE NO. :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="project_mang_mobile"
+                          maxlength="12"
+                          name="project_mang_mobile"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.project_mang_mobile.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.project_mang_mobile.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.project_mang_mobile.errors.pattern">
+                            Please enter valid mobile number
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="onsite_mobile" class="label-material margin-left">MOBILE NO :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="onsite_mobile" name="onsite_mobile" maxlength="12" [ngClass]="{ 'is-invalid': submitted && f.onsite_mobile.errors }"  class="input-material">
-                            <div *ngIf="submitted && f.onsite_mobile.errors" class="invalid-feedback">
-                              <div *ngIf="f.onsite_mobile.errors.pattern">Please enter valid mobile number</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="onsite_email" class="label-material margin-left">EMAIL ID :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="onsite_email" name="onsite_email"  class="input-material" [ngClass]="{ 'is-invalid': submitted && f.onsite_email.errors }">
-                            <div *ngIf="submitted && f.onsite_email.errors" class="invalid-feedback">
-                              <div *ngIf="f.onsite_email.errors.pattern">Please enter valid email</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">PROJECT TYPE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="project_type" formControlName="project_type">
-                              <option value="">Select</option>
-                              <option value="Demolition">Demolition</option> 
-                              <option value="Refurbish">Refurbish</option>
-                              <option value="New Build">New Build</option>
-                            </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="project_mang_email"
+                          class="label-material margin-left"
+                          >EMAIL ID. :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="project_mang_email"
+                          name="project_mang_email"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.project_mang_email.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.project_mang_email.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.project_mang_email.errors.pattern">
+                            Please enter valid email
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">PROJECT STATUS :</label>
+                      </div>
+                    </div>
+                    <h3>ONSITE CONTACT DETAILS</h3>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="onsite_name"
+                          class="label-material margin-left"
+                          >NAME :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="onsite_name"
+                          name="onsite_name"
+                          maxlength="50"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="onsite_mobile"
+                          class="label-material margin-left"
+                          >MOBILE NO :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="onsite_mobile"
+                          name="onsite_mobile"
+                          maxlength="12"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.onsite_mobile.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.onsite_mobile.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.onsite_mobile.errors.pattern">
+                            Please enter valid mobile number
                           </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="project_status" formControlName="project_status">
-                              <option value="">Select</option>
-                              <option value="Idea/Planning">Idea/Planning</option>  
-                              <option value="Concept Development/Sketch Project">Concept Development/Sketch Project</option>
-                              <option value="Detailed Engineering">Detailed Engineering</option>
-                              <option value="Production">Production</option>
-                              <option value="Delivery/Finished">Delivery/Finished</option>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="onsite_email"
+                          class="label-material margin-left"
+                          >EMAIL ID :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="onsite_email"
+                          name="onsite_email"
+                          class="input-material"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.onsite_email.errors
+                          }"
+                        />
+                        <div
+                          *ngIf="submitted && f.onsite_email.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.onsite_email.errors.pattern">
+                            Please enter valid email
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >PROJECT TYPE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="project_type"
+                          formControlName="project_type"
+                        >
+                          <option value="">Select</option>
+                          <option value="Demolition">Demolition</option>
+                          <option value="Refurbish">Refurbish</option>
+                          <option value="New Build">New Build</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >PROJECT STATUS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="project_status"
+                          formControlName="project_status"
+                        >
+                          <option value="">Select</option>
+                          <option value="Idea/Planning">Idea/Planning</option>
+                          <option value="Concept Development/Sketch Project">
+                            Concept Development/Sketch Project
+                          </option>
+                          <option value="Detailed Engineering">
+                            Detailed Engineering
+                          </option>
+                          <option value="Production">Production</option>
+                          <option value="Delivery/Finished">
+                            Delivery/Finished
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >AREA/TOTAL (In Square Meters) :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="property_area"
+                          name="property_area"
+                          min="0"
+                          max="999999"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.property_area.errors
+                          }"
+                          oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.property_area.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.property_area.errors.pattern">
+                            Please enter valid Property area
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >NO. OF FLOORS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="no_of_floors"
+                          name="no_of_floors"
+                          min="0"
+                          max="20"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.no_of_floors.errors
+                          }"
+                          oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.no_of_floors.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.no_of_floors.errors.pattern">
+                            Please enter valid No of Floors
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >BUILDING YEAR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date only_year col-md-5"
+                          data-date-format="yyyy"
+                          data-link-field="building_year"
+                          data-link-format="yyyy"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="building_year"
+                            formControlName="building_year"
+                            name="building_year"
+                            readonly
+                          />
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div> -->
+
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="building_year" class="label-material"
+                          >BUILDING YEAR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="building_year"
+                          id="building_year"
+                          formControlName="building_year"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let year of yearOptions"
+                            value="{{ year }}"
+                          >
+                            {{ year }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- 
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >LAST REFURBISHED :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date only_year col-md-5"
+                          data-date-format="yyyy"
+                          data-link-field="last_refurbished"
+                          data-link-format="yyyy"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="last_refurbished"
+                            formControlName="last_refurbished"
+                            name="last_refurbished"
+                            readonly
+                          />
+                         
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div> -->
+
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="last_refurbished" class="label-material"
+                          >LAST REFURBISHED :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          id="last_refurbished"
+                          formControlName="last_refurbished"
+                          name="last_refurbished"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let year of yearOptions"
+                            value="{{ year }}"
+                          >
+                            {{ year }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >ENVIORMENTAL REPORT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="1"
+                            [(ngModel)]="env_report"
+                            [checked]="projectInfo?.env_report == '1'"
+                            name="env_report"
+                            formControlName="env_report"
+                          />
+                          Yes </label
+                        >&nbsp;&nbsp;
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="0"
+                            [(ngModel)]="env_report"
+                            [checked]="projectInfo?.env_report == '0'"
+                            name="env_report"
+                            formControlName="env_report"
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >FDV DOCUMENTATION AVAILABLE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="1"
+                            [(ngModel)]="fdv_document"
+                            [checked]="projectInfo?.fdv_document == '1'"
+                            name="fdv_document"
+                            formControlName="fdv_document"
+                          />
+                          Yes </label
+                        >&nbsp;&nbsp;
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="0"
+                            [(ngModel)]="fdv_document"
+                            [checked]="projectInfo?.fdv_document == '0'"
+                            name="fdv_document"
+                            formControlName="fdv_document"
+                          />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >ENVIORMENTAL AMBITION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="ambition"
+                          name="ambition"
+                          maxlength="30"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_type" class="label-material"
+                          >PROJECT START DATE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date fulldate col-md-5"
+                          data-date=""
+                          data-date-format="yyyy.mm.dd"
+                          data-link-field="project_start_date"
+                          data-link-format="yyyy.mm.dd"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="project_start_date"
+                            formControlName="project_start_date"
+                            name="project_start_date"
+                            placeholder="YYYY.MM.DD"
+                          />
+                          <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_catalog_date" class="label-material"
+                          >PROJECT CATALOGUE DELIVERY DATE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date fulldate col-md-5"
+                          data-date-format="yyyy.mm.dd"
+                          data-link-field="project_catalog_date"
+                          data-link-format="yyyy.mm.dd"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="project_catalog_date"
+                            formControlName="project_catalog_date"
+                            name="project_catalog_date"
+                            placeholder="YYYY.MM.DD"
+                          />
+                          <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_avail_date" class="label-material"
+                          >PROJECT AVAILABILITY START DATE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date fulldate col-md-5"
+                          data-date-format="yyyy.mm.dd"
+                          data-link-field="project_avail_date"
+                          data-link-format="yyyy.mm.dd"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="project_avail_date"
+                            formControlName="project_avail_date"
+                            name="project_avail_date"
+                            placeholder="YYYY.MM.DD"
+                          />
+                          <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="project_avail_end_date"
+                          class="label-material"
+                          >PROJECT AVAILABILITY END DATE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date fulldate col-md-5"
+                          data-date-format="yyyy.mm.dd"
+                          data-link-field="project_avail_end_date"
+                          data-link-format="yyyy.mm.dd"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="project_avail_end_date"
+                            formControlName="project_avail_end_date"
+                            name="project_avail_end_date"
+                            placeholder="YYYY.MM.DD"
+                          />
+                          <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="note" class="label-material">NOTES :</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="note"
+                          name="note"
+                          maxlength="250"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <h3>BILLING DETAILS</h3>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_project_company"
+                          class="label-material margin-left"
+                          >PROJECT COMPANY :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_project_company"
+                          maxlength="60"
+                          name="billing_project_company"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_orgno"
+                          class="label-material margin-left"
+                          >ORG NO :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_orgno"
+                          name="billing_orgno"
+                          maxlength="10"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_project_number"
+                          class="label-material margin-left"
+                          >CUSTOMER PROJECT NUMBER :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="billing_project_number"
+                          name="billing_project_number"
+                          min="0"
+                          max="20"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_customer_ref"
+                          class="label-material margin-left"
+                          >CUSTOMER REFERENCE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_customer_ref"
+                          name="billing_customer_ref"
+                          maxlength="30"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_address"
+                          class="label-material margin-left"
+                          >BILLING ADDRESS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_address"
+                          name="billing_address"
+                          maxlength="200"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_postal_code"
+                          class="label-material margin-left"
+                          >BILLING POSTAL CODE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_postal_code"
+                          name="billing_postal_code"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.billing_postal_code.errors
+                          }"
+                          maxlength="10"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.billing_postal_code.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.billing_postal_code.errors.pattern">
+                            Please enter valid billing postal code
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          >BILLING POSTAL AREA :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="billing_postal_area"
+                          name="billing_postal_area"
+                          maxlength="50"
+                          class="input-material"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label
+                          for="credit_period"
+                          class="label-material margin-left"
+                          >CREDIT PERIOD:</label
+                        >
+                      </div>
+                      <div class="col-md-8 row">
+                        <div class="col-md-4">
+                          <select
+                            class="input-material"
+                            name="credit_period_select"
+                            (change)="credit_period($event.target.value)"
+                          >
+                            <option value="">Select</option>
+                            <option
+                              value="14"
+                              [selected]="projectInfo?.credit_period == '14'"
+                            >
+                              14 Days
+                            </option>
+                            <option
+                              value="30"
+                              [selected]="projectInfo?.credit_period == '30'"
+                            >
+                              30 Days
+                            </option>
+                            <option
+                              value="45"
+                              [selected]="projectInfo?.credit_period == '45'"
+                            >
+                              45 Days
+                            </option>
+                            <option
+                              value="1"
+                              [selected]="projectInfo?.credit_period > '45'"
+                            >
+                              Others
+                            </option>
                           </select>
-                          </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">AREA/TOTAL (In Square Meters) :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="property_area" name="property_area" min="0" max="999999" [ngClass]="{ 'is-invalid': submitted && f.property_area.errors }" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="input-material">
-                            <div *ngIf="submitted && f.property_area.errors" class="invalid-feedback">
-                              <div *ngIf="f.property_area.errors.pattern">Please enter valid Property area</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">NO. OF FLOORS :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="no_of_floors" name="no_of_floors" min="0" max="20" [ngClass]="{ 'is-invalid': submitted && f.no_of_floors.errors }"  oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="input-material">
-                            <div *ngIf="submitted && f.no_of_floors.errors" class="invalid-feedback">
-                              <div *ngIf="f.no_of_floors.errors.pattern">Please enter valid No of Floors</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">BUILDING YEAR :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date only_year col-md-5" data-date-format="yyyy" data-link-field="building_year" data-link-format="yyyy">
-                              <input class="form-control" size="16" type="text" id="building_year" formControlName="building_year" name="building_year" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">LAST REFURBISHED :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date only_year col-md-5"  data-date-format="yyyy" data-link-field="last_refurbished" data-link-format="yyyy">
-                              <input class="form-control" size="16" type="text" id="last_refurbished" formControlName="last_refurbished" name="last_refurbished" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">ENVIORMENTAL REPORT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <label class="md-check">
-                              <input type="radio" [value]="1" [(ngModel)]="env_report" [checked]="projectInfo?.env_report=='1'" name="env_report" formControlName="env_report">
-                              Yes
-                            </label>&nbsp;&nbsp;
-                            <label class="md-check">
-                              <input type="radio" [value]="0" [(ngModel)]="env_report"  [checked]="projectInfo?.env_report=='0'" name="env_report" formControlName="env_report">     
-                               No
-                            </label>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">FDV DOCUMENTATION AVAILABLE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <label class="md-check">
-                              <input type="radio" [value]="1" [(ngModel)]="fdv_document" [checked]="projectInfo?.fdv_document=='1'" name="fdv_document"  formControlName="fdv_document">
-                              Yes
-                            </label>&nbsp;&nbsp;
-                            <label class="md-check">
-                              <input type="radio" [value]="0" [(ngModel)]="fdv_document" [checked]="projectInfo?.fdv_document=='0'" name="fdv_document"  formControlName="fdv_document">     
-                               No
-                            </label>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">ENVIORMENTAL AMBITION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="ambition" name="ambition" maxlength="30" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_type" class="label-material">PROJECT START DATE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date fulldate col-md-5"  data-date="" data-date-format="yyyy.mm.dd" data-link-field="project_start_date" data-link-format="yyyy.mm.dd">
-                              <input class="form-control" size="16" type="text"  id="project_start_date" formControlName="project_start_date" name="project_start_date" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_catalog_date" class="label-material">PROJECT CATALOGUE DELIVERY DATE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date fulldate col-md-5"  data-date-format="yyyy.mm.dd" data-link-field="project_catalog_date" data-link-format="yyyy.mm.dd">
-                              <input class="form-control" size="16" type="text" id="project_catalog_date" formControlName="project_catalog_date" name="project_catalog_date" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_avail_date" class="label-material">PROJECT AVAILABILITY START DATE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date fulldate col-md-5"  data-date-format="yyyy.mm.dd" data-link-field="project_avail_date" data-link-format="yyyy.mm.dd">
-                              <input class="form-control" size="16" type="text" id="project_avail_date"  formControlName="project_avail_date" name="project_avail_date" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_avail_end_date" class="label-material">PROJECT AVAILABILITY END DATE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date fulldate col-md-5"  data-date-format="yyyy.mm.dd" data-link-field="project_avail_end_date" data-link-format="yyyy.mm.dd">
-                              <input class="form-control" size="16" type="text"  id="project_avail_end_date"   formControlName="project_avail_end_date" name="project_avail_end_date" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="note" class="label-material">NOTES :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="note" name="note" maxlength="250" class="input-material">
-                          </div>
-                        </div>
-                        <h3>BILLING DETAILS</h3>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_project_company" class="label-material margin-left">PROJECT COMPANY :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_project_company" maxlength="60" name="billing_project_company"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_orgno" class="label-material margin-left">ORG NO :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_orgno" name="billing_orgno" maxlength="10" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_project_number" class="label-material margin-left">CUSTOMER PROJECT NUMBER :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="billing_project_number" name="billing_project_number" min="0" max="20"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_customer_ref" class="label-material margin-left">CUSTOMER REFERENCE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_customer_ref" name="billing_customer_ref" maxlength="30"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_address" class="label-material margin-left">BILLING ADDRESS :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_address" name="billing_address" maxlength="200" class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_postal_code" class="label-material margin-left">BILLING POSTAL CODE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_postal_code" name="billing_postal_code"  [ngClass]="{ 'is-invalid': submitted && f.billing_postal_code.errors }" maxlength="10" class="input-material">
-                            <div *ngIf="submitted && f.billing_postal_code.errors" class="invalid-feedback">
-                              <div *ngIf="f.billing_postal_code.errors.pattern">Please enter valid billing postal code</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="billing_postal_area" class="label-material margin-left">BILLING POSTAL AREA :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="billing_postal_area" name="billing_postal_area" maxlength="50"  class="input-material">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="credit_period" class="label-material margin-left">CREDIT PERIOD:</label>
-                          </div>
-                          <div class="col-md-8 row">
-                            <div class="col-md-4">
-                              <select class="input-material" name="credit_period_select"  (change)="credit_period($event.target.value)">
-                                <option value="">Select</option>
-                                <option value="14" [selected]="projectInfo?.credit_period=='14'">14 Days</option> 
-                                <option value="30" [selected]="projectInfo?.credit_period=='30'">30 Days</option>
-                                <option value="45" [selected]="projectInfo?.credit_period=='45'">45 Days</option>
-                                <option value="1" [selected]="projectInfo?.credit_period > '45'">Others</option>
-                              </select>
-                            </div>
-                            <div class="col-md-4" *ngIf="projectInfo?.credit_period > '45'">
-                              <input type="text" formControlName="credit_period" id="credit_period" maxlength="20" name="credit_period"  >
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row" *ngIf="projectInfo?.projectdocs.length > 0">
-                          <div class="col-md-6 p-3">
-                            <label for="billing_postal_area" class="label-material margin-left">FILE NAME - CATEGORY</label>
-                          </div>
-                        </div>
-                        <div class="form-group row"  *ngFor="let doc of projectInfo?.projectdocs; index as i">
-                          <div class="col-md-6 p-3" style="font-size: 12px;">
-                            <label for="billing_postal_area" class="label-material margin-left"><a href="{{doc_path+'/documents/'+doc?.file_name}}" target="_blank">{{doc?.file_name}}</a>&nbsp;&nbsp;<a href="{{doc_path+'/documents/'+doc?.file_name}}" target="_blank">{{doc?.project_category?.category_name}}</a></label>&nbsp;&nbsp;&nbsp;
-                            <label><a href="javascript:void();" (click)="deletedoc(doc.id)"><i class="fa fa-trash" aria-hidden="true"></i></a></label>
-                          </div>
-                        </div>
-                        <div class="form-group row"   *ngFor="let file of filesmulti; index as i">
-                          <div class="col-md-6 p-3" style="font-size: 12px;">
-                            <label for="billing_postal_area" class="label-material margin-left">{{file.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{filecattext[i]}} </label>&nbsp;&nbsp;&nbsp;
-                          </div>
+                        <div
+                          class="col-md-4"
+                          *ngIf="projectInfo?.credit_period > '45'"
+                        >
+                          <input
+                            type="text"
+                            formControlName="credit_period"
+                            id="credit_period"
+                            maxlength="20"
+                            name="credit_period"
+                          />
                         </div>
                       </div>
                     </div>
-                  </form>
-              <hr>
+                    <div
+                      class="form-group row"
+                      *ngIf="projectInfo?.projectdocs.length > 0"
+                    >
+                      <div class="col-md-6 p-3">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          >FILE NAME - CATEGORY</label
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                      *ngFor="let doc of projectInfo?.projectdocs; index as i"
+                    >
+                      <div class="col-md-6 p-3" style="font-size: 12px">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          ><a
+                            href="{{
+                              doc_path + '/documents/' + doc?.file_name
+                            }}"
+                            target="_blank"
+                            >{{ doc?.file_name }}</a
+                          >&nbsp;&nbsp;<a
+                            href="{{
+                              doc_path + '/documents/' + doc?.file_name
+                            }}"
+                            target="_blank"
+                            >{{ doc?.project_category?.category_name }}</a
+                          ></label
+                        >&nbsp;&nbsp;&nbsp;
+                        <label
+                          ><a
+                            href="javascript:void();"
+                            (click)="deletedoc(doc.id)"
+                            ><i class="fa fa-trash" aria-hidden="true"></i></a
+                        ></label>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                      *ngFor="let file of filesmulti; index as i"
+                    >
+                      <div class="col-md-6 p-3" style="font-size: 12px">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          >{{ file.name }}&nbsp;&nbsp;&nbsp;&nbsp;{{
+                            filecattext[i]
+                          }} </label
+                        >&nbsp;&nbsp;&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <hr />
             </div>
           </div>
         </div>
@@ -456,12 +1056,24 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add Files</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -470,27 +1082,56 @@
           <div class="col-md-3">
             <select class="form-control" name="categories" id="categories">
               <option value="">Select</option>
-              <option *ngFor="let category of categories; index as i" value="{{category.id}}">{{category.category_name}}</option>
+              <option
+                *ngFor="let category of categories; index as i"
+                value="{{ category.id }}"
+              >
+                {{ category.category_name }}
+              </option>
             </select>
           </div>
           <div class="col-md-9 row">
             <div class="col-md-7">
-              <input type="file" id="fileupload" name="fileupload" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" />
+              <input
+                type="file"
+                id="fileupload"
+                name="fileupload"
+                accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+              />
             </div>
             <div class="col-md-2">
-              <input type="button" name="add_files" id="add_files" value="Add Files" (click)="addcategory()"/>
+              <input
+                type="button"
+                name="add_files"
+                id="add_files"
+                value="Add Files"
+                (click)="addcategory()"
+              />
             </div>
           </div>
         </div>
         <div class="form-group" *ngFor="let file of filesmulti; index as i">
-          {{filecattext[i]}} &nbsp;&nbsp;&nbsp;&nbsp;{{file.name}} <span style="float: right;"><a href="javascript:void(0);" (click)="delete_add(i)">Delete</a></span>
+          {{ filecattext[i] }} &nbsp;&nbsp;&nbsp;&nbsp;{{ file.name }}
+          <span style="float: right"
+            ><a href="javascript:void(0);" (click)="delete_add(i)"
+              >Delete</a
+            ></span
+          >
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>

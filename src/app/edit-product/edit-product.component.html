@@ -1,23 +1,27 @@
 <div class="gooey align-items-center" *ngIf="loadingData">
   <span class="dot"></span>
   <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-  </div> 
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 <div class="page">
   <div class="page-content d-flex align-items-stretch">
     <!-- Side Navbar -->
     <app-left-nav></app-left-nav>
     <div class="content-inner">
-  <!-- Main Navbar-->
-  <app-header></app-header>      
+      <!-- Main Navbar-->
+      <app-header></app-header>
       <!-- Breadcrumb-->
       <div class="breadcrumb-holder container-fluid">
         <ul class="breadcrumb">
           <li class="breadcrumb-item"><a routerLink="/products">Product</a></li>
-          <li class="breadcrumb-item"><a routerLink="/view-product/productInfo?.id">{{productInfo?.product_id}}</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink="/view-product/productInfo?.id">{{
+              productInfo?.product_id
+            }}</a>
+          </li>
           <li class="breadcrumb-item active">Edit</li>
         </ul>
       </div>
@@ -25,119 +29,258 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-                  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-                    <div class="row">
-                      <div class="col-sm-5" style="margin:auto;">
-                        <!-- <input type="file" name="photo" id="photo" formControlName="photo"> -->
-                        <label for='imgupload'><img src="assets/images/default.jpg" class="img-fluid" *ngIf="imgURL== '' && editimgUrl == ''">
-                          <img src="{{editimgUrl}}" class="img-fluid" *ngIf="imgURL== '' && !editimgUrl == ''"></label>
-                        <span style="color:red;" *ngIf="message">{{message}}</span>
-                        <input type="file" id="imgupload" accept='image/*' (change)="preview($event.target.files)"
-                          style="display:none" />
-                        <br /> <br />
-                        <label for='imgupload'><img [src]="imgURL" height="200" *ngIf="imgURL"></label>
+              <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-sm-5" style="margin: auto">
+                    <!-- <input type="file" name="photo" id="photo" formControlName="photo"> -->
+                    <label for="imgupload"
+                      ><img
+                        src="assets/images/default.jpg"
+                        class="img-fluid"
+                        *ngIf="imgURL == '' && editimgUrl == ''" />
+                      <img
+                        src="{{ editimgUrl }}"
+                        class="img-fluid"
+                        *ngIf="imgURL == '' && !editimgUrl == ''"
+                    /></label>
+                    <span style="color: red" *ngIf="message">{{
+                      message
+                    }}</span>
+                    <input
+                      type="file"
+                      id="imgupload"
+                      accept="image/*"
+                      (change)="preview($event.target.files)"
+                      style="display: none"
+                    />
+                    <br />
+                    <br />
+                    <label for="imgupload"
+                      ><img [src]="imgURL" height="200" *ngIf="imgURL"
+                    /></label>
+                  </div>
+                  <div class="col-sm-7">
+                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">
+                      {{ error }}
+                    </div>
+                    <br />
+                    <div class="form-fbt">
+                      <div class="form-group text-center">
+                        <input
+                          type="submit"
+                          name="submit"
+                          value="Update"
+                          class="btn btn-default"
+                        />
                       </div>
-                      <div class="col-sm-7">
-                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-                        <br/>
-                        <div class="form-fbt">
-                          <div class="form-group text-center">
-                            <input type="submit" name="submit" value="Update" class="btn btn-default">
-                          </div>
-                          <div class="form-group text-center">
-                            <label class="btn btn-secondary"  data-toggle="modal" data-target="#exampleModal">Add Files</label>
-                            <!-- <input type="file" id="fileupload" name="fileupload" (change)="addfiles($event.target.files)" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" multiple style="display:none" /> -->
-                          </div>
-                          <div class="form-group text-center" *ngFor="let file of filesmulti; index as i">
-                            {{file.name}}
-                            <div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                      <div class="form-group text-center">
+                        <label
+                          class="btn btn-secondary"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                          >Add Files</label
+                        >
+                        <!-- <input type="file" id="fileupload" name="fileupload" (change)="addfiles($event.target.files)" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" multiple style="display:none" /> -->
+                      </div>
+                      <div
+                        class="form-group text-center"
+                        *ngFor="let file of filesmulti; index as i"
+                      >
+                        {{ file.name }}
+                        <div class="progress">
+                          <div
+                            class="progress-bar"
+                            role="progressbar"
+                            aria-valuenow="0"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_id" class="label-material"
+                          >PRODUCT ID* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="product_id"
+                          name="product_id"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.product_id.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.product_id.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.product_id.errors.required">
+                            PRODUCT ID is required
                           </div>
                         </div>
                       </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_id" class="label-material">PRODUCT ID* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="product_id"   name="product_id" [ngClass]="{ 'is-invalid': submitted && f.product_id.errors }" class="input-material">
-                            <div *ngIf="submitted && f.product_id.errors" class="invalid-feedback">
-                              <div *ngIf="f.product_id.errors.required">PRODUCT ID is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_name" class="label-material">PRODUCT NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="product_name"  maxlength="30" name="product_name" [ngClass]="{ 'is-invalid': submitted && f.product_name.errors }" class="input-material">
-                            <div *ngIf="submitted && f.product_name.errors" class="invalid-feedback">
-                              <div *ngIf="f.product_name.errors.required">PRODUCT NAME is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="project_id" class="label-material">PROJECT NAME* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="project_id" formControlName="project_id" [ngClass]="{ 'is-invalid': submitted && f.project_id.errors }">
-                              <option value="">Select</option>
-                              <option *ngFor="let project of projects; index as i" value="{{project.id}}" [selected] ="true">{{project.project_name}}</option>   
-                            </select>
-                            <div *ngIf="submitted && f.project_id.errors" class="invalid-feedback">
-                              <div *ngIf="f.project_id.errors.required">Project NAME is required</div>
-                            </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_name" class="label-material"
+                          >PRODUCT NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="product_name"
+                          maxlength="30"
+                          name="product_name"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.product_name.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.product_name.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.product_name.errors.required">
+                            PRODUCT NAME is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="description" class="label-material">DESCRIPTION* :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="description" name="description" maxlength="300" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" class="input-material">
-                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                              <div *ngIf="f.description.errors.required">Description is required</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="project_id" class="label-material"
+                          >PROJECT NAME* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="project_id"
+                          formControlName="project_id"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.project_id.errors
+                          }"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let project of projects; index as i"
+                            value="{{ project.id }}"
+                            [selected]="true"
+                          >
+                            {{ project.project_name }}
+                          </option>
+                        </select>
+                        <div
+                          *ngIf="submitted && f.project_id.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.project_id.errors.required">
+                            Project NAME is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="category" class="label-material">CATEGORY :</label>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="description" class="label-material"
+                          >DESCRIPTION* :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="description"
+                          name="description"
+                          maxlength="300"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.description.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.description.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.description.errors.required">
+                            Description is required
                           </div>
-                          <div class="col-md-8">
-                            <select class="input-material" formControlName="category" name="category" id="category" [ngClass]="{ 'is-invalid': submitted && f.category.errors }" class="input-material">
-                              <option value="">Select</option>
-                              <option *ngFor="let category of categories; index as i" value="{{category.id}}" [selected]="category?.id == productInfo?.category">{{category.category_name}}</option>
-                            </select>
-                            <!-- <input type="text" formControlName="category" name="category" [ngClass]="{ 'is-invalid': submitted && f.category.errors }" class="input-material">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="category" class="label-material"
+                          >CATEGORY :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          formControlName="category"
+                          name="category"
+                          id="category"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.category.errors
+                          }"
+                          class="input-material"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let category of categories; index as i"
+                            value="{{ category.id }}"
+                            [selected]="category?.id == productInfo?.category"
+                          >
+                            {{ category.category_name }}
+                          </option>
+                        </select>
+                        <!-- <input type="text" formControlName="category" name="category" [ngClass]="{ 'is-invalid': submitted && f.category.errors }" class="input-material">
                             <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
                               <div *ngIf="f.category.errors.required">Category is required</div>
                             </div> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="building_part" class="label-material"
+                          >BUILDING PART :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="building_part"
+                          name="building_part"
+                          maxlength="30"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.building_part.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.building_part.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.building_part.errors.required">
+                            Building Part is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="building_part" class="label-material">BUILDING PART :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="building_part" name="building_part" maxlength="30" [ngClass]="{ 'is-invalid': submitted && f.building_part.errors }" class="input-material">
-                            <div *ngIf="submitted && f.building_part.errors" class="invalid-feedback">
-                              <div *ngIf="f.building_part.errors.required">Building Part is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- <div class="form-group row">
+                      </div>
+                    </div>
+                    <!-- <div class="form-group row">
                           <div class="col-md-4 p-3">
                             <label for="unit" class="label-material">UNIT :</label>
                           </div> -->
-                          <!-- <div class="col-md-8">
+                    <!-- <div class="col-md-8">
                             <select class="form-control" name="unit" formControlName="unit" selected [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" class="input-material">
                               <option value="">Select</option>
                               <option value="Piece">Piece</option> 
@@ -145,236 +288,557 @@
                               <option value="Square Meters">Square Meters</option>
                               <option value="Kilos">Kilos</option>
                             </select> -->
-                            <!-- <input type="text" formControlName="unit" name="unit" [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" class="input-material">
+                    <!-- <input type="text" formControlName="unit" name="unit" [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" class="input-material">
                             <div *ngIf="submitted && f.unit.errors" class="invalid-feedback">
                               <div *ngIf="f.unit.errors.required">Unit is required</div>
                             </div> -->
-                          <!-- </div>
+                    <!-- </div>
                         </div> -->
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="quantity" class="label-material">QUANTITY :</label>
-                          </div>
-                          <div class="col-md-8 row">
-                            <div class="col-md-3 p-3">
-                              <select class="input-material" name="unitqnt" formControlName="unitqnt"  [ngClass]="{ 'is-invalid': submitted && f.unitqnt.errors }" class="input-material">
-                                <option value="">Select Unit</option>
-                                <option value="Piece">Piece</option> 
-                                <option value="Meters">Meters</option>
-                                <option value="Square Meters">Square Meters</option>
-                                <option value="Kilos">Kilos</option>
-                              </select>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="quantity" class="label-material"
+                          >QUANTITY :</label
+                        >
+                      </div>
+                      <div class="col-md-8 row">
+                        <div class="col-md-3 p-3">
+                          <select
+                            class="input-material"
+                            name="unitqnt"
+                            formControlName="unitqnt"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.unitqnt.errors
+                            }"
+                            class="input-material"
+                          >
+                            <option value="">Select Unit</option>
+                            <option value="Piece">Piece</option>
+                            <option value="Meters">Meters</option>
+                            <option value="Square Meters">Square Meters</option>
+                            <option value="Kilos">Kilos</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 p-3">
+                          <input
+                            type="number"
+                            formControlName="quantity"
+                            name="unit"
+                            min="0"
+                            max="999999999"
+                            oninput="this.value = 
+                              !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.quantity.errors
+                            }"
+                            class="input-material"
+                          />
+                          <div
+                            *ngIf="submitted && f.quantity.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.quantity.errors.max">
+                              Quantity should be in range of 0 - 999999999
                             </div>
-                            <div class="col-md-3 p-3">
-                              <input type="number" formControlName="quantity" name="unit" min="0" max="999999999" oninput="this.value = 
-                              !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }" class="input-material">
-                              <div *ngIf="submitted && f.quantity.errors" class="invalid-feedback">
-                                <div *ngIf="f.quantity.errors.max">Quantity should be in range of 0 - 999999999</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="dimensions" class="label-material"
+                          >DIMENSIONS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div class="row">
+                          <div class="col-md-3 p-3">
+                            <select
+                              class="input-material"
+                              name="unit"
+                              formControlName="unit"
+                              [ngClass]="{
+                                'is-invalid': submitted && f.unit.errors
+                              }"
+                              class="input-material"
+                            >
+                              <option value="">Select Unit</option>
+                              <option value="Inch">Inch</option>
+                              <option value="Meters">Meters</option>
+                              <option value="CM">CM</option>
+                              <option value="Feet">Feet</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <input
+                              type="number"
+                              formControlName="length"
+                              name="length"
+                              min="0"
+                              max="999999999"
+                              oninput="this.value = 
+                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                              [ngClass]="{
+                                'is-invalid': submitted && f.length.errors
+                              }"
+                              class="input-material"
+                              placeholder="Length"
+                            />
+                            <div
+                              *ngIf="submitted && f.length.errors"
+                              class="invalid-feedback"
+                            >
+                              <div *ngIf="f.length.errors.max">
+                                Length should be in range of 0 - 999999999
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <input
+                              type="number"
+                              formControlName="height"
+                              name="height"
+                              min="0"
+                              max="999999999"
+                              oninput="this.value = 
+                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                              [ngClass]="{
+                                'is-invalid': submitted && f.height.errors
+                              }"
+                              class="input-material"
+                              placeholder="Height"
+                            />
+                            <div
+                              *ngIf="submitted && f.height.errors"
+                              class="invalid-feedback"
+                            >
+                              <div *ngIf="f.height.errors.max">
+                                Height should be in range of 0 - 999999999
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <input
+                              type="number"
+                              formControlName="width"
+                              name="width"
+                              min="0"
+                              max="999999999"
+                              oninput="this.value = 
+                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                              [ngClass]="{
+                                'is-invalid': submitted && f.width.errors
+                              }"
+                              class="input-material"
+                              placeholder="Width"
+                            />
+                            <div
+                              *ngIf="submitted && f.width.errors"
+                              class="invalid-feedback"
+                            >
+                              <div *ngIf="f.width.errors.max">
+                                Width should be in range of 0 - 999999999
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="dimensions" class="label-material">DIMENSIONS :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="row">
-                              <div class="col-md-3 p-3">
-                                <select class="input-material" name="unit" formControlName="unit" [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" class="input-material">
-                                  <option value="">Select Unit</option>
-                                  <option value="Inch">Inch</option> 
-                                  <option value="Meters">Meters</option>
-                                  <option value="CM">CM</option>
-                                  <option value="Feet">Feet</option>
-                                </select>
-                              </div>
-                              <div class="col-md-3">
-                                <input  type="number" formControlName="length" name="length"  min="0" max="999999999" oninput="this.value = 
-                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" [ngClass]="{ 'is-invalid': submitted && f.length.errors }" class="input-material" placeholder="Length">
-                                <div *ngIf="submitted && f.length.errors" class="invalid-feedback">
-                                  <div *ngIf="f.length.errors.max">Length should be in range of 0 - 999999999</div>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <input  type="number" formControlName="height" name="height"  min="0" max="999999999" oninput="this.value = 
-                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" [ngClass]="{ 'is-invalid': submitted && f.height.errors }" class="input-material" placeholder="Height">
-                                <div *ngIf="submitted && f.height.errors" class="invalid-feedback">
-                                  <div *ngIf="f.height.errors.max">Height should be in range of 0 - 999999999</div>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <input  type="number" formControlName="width" name="width"  min="0" max="999999999" oninput="this.value = 
-                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" [ngClass]="{ 'is-invalid': submitted && f.width.errors }" class="input-material" placeholder="Width">
-                                <div *ngIf="submitted && f.width.errors" class="invalid-feedback">
-                                  <div *ngIf="f.width.errors.max">Width should be in range of 0 - 999999999</div>
-                                </div>
-                              </div>
-                            </div>											
-                          </div>
-                        </div> <br><br> <br>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="production_year" class="label-material">PRODUCTION YEAR :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="input-group date only_year col-md-5" data-date-format="yyyy" data-link-field="building_year" data-link-format="yyyy">
-                              <input class="form-control" size="16" type="text" id="production_year" formControlName="production_year" name="production_year" readonly>
-                              <!-- <span class="input-group-addon"><span class="fa fa-remove"></span></span> -->
-                              <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
-                            </div>
-                            <!-- <input type="text" formControlName="production_year" name="production_year" [ngClass]="{ 'is-invalid': submitted && f.production_year.errors }" class="input-material">
-                            <div *ngIf="submitted && f.production_year.errors" class="invalid-feedback">
-                              <div *ngIf="f.production_year.errors.required">Production Year is required</div>
-                            </div> -->
+                      </div>
+                    </div>
+                    <br /><br />
+                    <br />
+
+                    <!-- <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="production_year" class="label-material"
+                          >PRODUCTION YEAR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <div
+                          class="input-group date only_year col-md-5"
+                          data-date-format="yyyy"
+                          data-link-field="building_year"
+                          data-link-format="yyyy"
+                        >
+                          <input
+                            class="form-control"
+                            size="16"
+                            type="text"
+                            id="production_year"
+                            formControlName="production_year"
+                            name="production_year"
+                            readonly
+                          />
+                          <span class="input-group-addon"
+                            ><span class="fa fa-calendar"></span
+                          ></span>
+                        </div>
+                      </div>
+                    </div> -->
+
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="production_year" class="label-material"
+                          >PRODUCTION YEAR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          id="production_year"
+                          formControlName="production_year"
+                          name="production_year"
+                        >
+                          <option value="">Select</option>
+                          <option
+                            *ngFor="let year of yearOptions"
+                            value="{{ year }}"
+                          >
+                            {{ year }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="location_building" class="label-material"
+                          >LOCATION IN BUILDING :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="location_building"
+                          maxlength="50"
+                          name="location_building"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.location_building.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.location_building.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.location_building.errors.required">
+                            Location In Building is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="location_building" class="label-material">LOCATION IN BUILDING :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="location_building" maxlength="50" name="location_building" [ngClass]="{ 'is-invalid': submitted && f.location_building.errors }" class="input-material">
-                            <div *ngIf="submitted && f.location_building.errors" class="invalid-feedback">
-                              <div *ngIf="f.location_building.errors.required">Location In Building is required</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="brand_name" class="label-material"
+                          >BRAND NAME :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="brand_name"
+                          maxlength="50"
+                          name="brand_name"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.brand_name.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.brand_name.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.brand_name.errors.required">
+                            Brand Name is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="brand_name" class="label-material">BRAND NAME :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="brand_name" maxlength="50" name="brand_name" [ngClass]="{ 'is-invalid': submitted && f.brand_name.errors }" class="input-material">
-                            <div *ngIf="submitted && f.brand_name.errors" class="invalid-feedback">
-                              <div *ngIf="f.brand_name.errors.required">Brand Name is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="documentation" class="label-material">DOCUMENTATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <label class="md-check">
-                              <input type="radio" [value]="1"  [(ngModel)]="documentation" name="documentation" formControlName="documentation">
-                              Yes
-                            </label>&nbsp;&nbsp;
-                            <label class="md-check">
-                              <input type="radio" [value]="0"  [(ngModel)]="documentation" name="documentation" formControlName="documentation">     
-                               No
-                            </label>
-                            <!-- <input type="text" formControlName="documentation" name="documentation" [ngClass]="{ 'is-invalid': submitted && f.documentation.errors }" class="input-material">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="documentation" class="label-material"
+                          >DOCUMENTATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="1"
+                            [(ngModel)]="documentation"
+                            name="documentation"
+                            formControlName="documentation"
+                          />
+                          Yes </label
+                        >&nbsp;&nbsp;
+                        <label class="md-check">
+                          <input
+                            type="radio"
+                            [value]="0"
+                            [(ngModel)]="documentation"
+                            name="documentation"
+                            formControlName="documentation"
+                          />
+                          No
+                        </label>
+                        <!-- <input type="text" formControlName="documentation" name="documentation" [ngClass]="{ 'is-invalid': submitted && f.documentation.errors }" class="input-material">
                             <div *ngIf="submitted && f.documentation.errors" class="invalid-feedback">
                               <div *ngIf="f.documentation.errors.required">Documentation is required</div>
-                            </div> --> 
+                            </div> -->
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="product_info" class="label-material"
+                          >PRODUCT INFO :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="product_info"
+                          name="product_info"
+                          maxlength="60"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.product_info.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.product_info.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.product_info.errors.required">
+                            Product Info is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="product_info" class="label-material">PRODUCT INFO :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="product_info" name="product_info"  maxlength="60" [ngClass]="{ 'is-invalid': submitted && f.product_info.errors }" class="input-material">
-                            <div *ngIf="submitted && f.product_info.errors" class="invalid-feedback">
-                              <div *ngIf="f.product_info.errors.required">Product Info is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="color" class="label-material">COLOR :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="color" name="color" maxlength="30"  [ngClass]="{ 'is-invalid': submitted && f.color.errors }" class="input-material">
-                            <div *ngIf="submitted && f.color.errors" class="invalid-feedback">
-                              <div *ngIf="f.color.errors.required">COLOR is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="hazardous" class="label-material">HAZARDOUS CONTENT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="hazardous" maxlength="50" name="hazardous" [ngClass]="{ 'is-invalid': submitted && f.hazardous.errors }" class="input-material">
-                            <div *ngIf="submitted && f.hazardous.errors" class="invalid-feedback">
-                              <div *ngIf="f.hazardous.errors.required">HAZARDOUS CONTENT is required</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="color" class="label-material"
+                          >COLOR :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="color"
+                          name="color"
+                          maxlength="30"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.color.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.color.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.color.errors.required">
+                            COLOR is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="evaluvation" class="label-material">EVALUATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="evaluvation" maxlength="60"  name="evaluvation" [ngClass]="{ 'is-invalid': submitted && f.evaluvation.errors }" class="input-material">
-                            <div *ngIf="submitted && f.evaluvation.errors" class="invalid-feedback">
-                              <div *ngIf="f.evaluvation.errors.required">EVALUATION is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="precondition" class="label-material">PRECONDITIONS FOR REUSE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="precondition" maxlength="45" name="evaluvation" [ngClass]="{ 'is-invalid': submitted && f.evaluvation.errors }" class="input-material">
-                            <div *ngIf="submitted && f.evaluvation.errors" class="invalid-feedback">
-                              <div *ngIf="f.evaluvation.errors.required">EVALUATION is required</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="reuse" class="label-material">POTENTIAL FOR REUSE :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="reuse" maxlength="50" name="reuse" [ngClass]="{ 'is-invalid': submitted && f.reuse.errors }" class="input-material">
-                            <div *ngIf="submitted && f.reuse.errors" class="invalid-feedback">
-                              <div *ngIf="f.reuse.errors.required">POTENTIAL FOR REUSE is required</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="hazardous" class="label-material"
+                          >HAZARDOUS CONTENT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="hazardous"
+                          maxlength="50"
+                          name="hazardous"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.hazardous.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.hazardous.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.hazardous.errors.required">
+                            HAZARDOUS CONTENT is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="recommendation" class="label-material">RECOMMENDATION :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="text" formControlName="recommendation"  maxlength="50" name="recommendation" [ngClass]="{ 'is-invalid': submitted && f.recommendation.errors }" class="input-material">
-                            <div *ngIf="submitted && f.recommendation.errors" class="invalid-feedback">
-                              <div *ngIf="f.recommendation.errors.required">RECOMMENDATION is required</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="evaluvation" class="label-material"
+                          >EVALUATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="evaluvation"
+                          maxlength="60"
+                          name="evaluvation"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.evaluvation.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.evaluvation.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.evaluvation.errors.required">
+                            EVALUATION is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_new_product" class="label-material">PRICE - NEW PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="price_new_product" min="0" max="99999999"  oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" name="price_new_product" [ngClass]="{ 'is-invalid': submitted && f.price_new_product.errors }" class="input-material">
-                            <div *ngIf="submitted && f.price_new_product.errors" class="invalid-feedback">
-                              <div *ngIf="f.price_new_product.errors.max">Price - NEW Product should be in range of 0 - 999999999</div>
-                            </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="precondition" class="label-material"
+                          >PRECONDITIONS FOR REUSE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="precondition"
+                          maxlength="45"
+                          name="evaluvation"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.evaluvation.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.evaluvation.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.evaluvation.errors.required">
+                            EVALUATION is required
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="status" class="label-material">STATUS :</label>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="reuse" class="label-material"
+                          >POTENTIAL FOR REUSE :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="reuse"
+                          maxlength="50"
+                          name="reuse"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.reuse.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.reuse.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.reuse.errors.required">
+                            POTENTIAL FOR REUSE is required
                           </div>
-                          <div class="col-md-8">
-                            <select class="input-material" name="status" selected formControlName="status" [ngClass]="{ 'is-invalid': submitted && f.status.errors }" class="input-material">
-                              <option value="">Select</option>
-                              <option value="1">AVAILABLE ONSITE</option> 
-                              <option value="2">AVAILABLE FROM STORAGE</option>
-                              <option value="3">SOLD</option>
-                              <option value="4">UNAVAILABLE</option>
-                            </select>
-                            <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
-                              <div *ngIf="f.status.errors.required">Status is required</div>
-                            </div>
-                            <!-- <label class="md-check">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="recommendation" class="label-material"
+                          >RECOMMENDATION :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="text"
+                          formControlName="recommendation"
+                          maxlength="50"
+                          name="recommendation"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.recommendation.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.recommendation.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.recommendation.errors.required">
+                            RECOMMENDATION is required
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_new_product" class="label-material"
+                          >PRICE - NEW PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="price_new_product"
+                          min="0"
+                          max="99999999"
+                          oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                          name="price_new_product"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.price_new_product.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.price_new_product.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.price_new_product.errors.max">
+                            Price - NEW Product should be in range of 0 -
+                            999999999
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="status" class="label-material"
+                          >STATUS :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <select
+                          class="input-material"
+                          name="status"
+                          selected
+                          formControlName="status"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.status.errors
+                          }"
+                          class="input-material"
+                        >
+                          <option value="">Select</option>
+                          <option value="1">AVAILABLE ONSITE</option>
+                          <option value="2">AVAILABLE FROM STORAGE</option>
+                          <option value="3">SOLD</option>
+                          <option value="4">UNAVAILABLE</option>
+                        </select>
+                        <div
+                          *ngIf="submitted && f.status.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.status.errors.required">
+                            Status is required
+                          </div>
+                        </div>
+                        <!-- <label class="md-check">
                               <input type="radio" [value]="1" [(ngModel)]="status" name="status" formControlName="status" selected>
                               Active
                             </label>&nbsp;&nbsp;
@@ -382,47 +846,110 @@
                               <input type="radio" [value]="0" [(ngModel)]="status" name="status" formControlName="status">     
                               Inactive
                             </label> -->
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_used_product" class="label-material">PRICE - USED PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="price_used_product" min="0" max="99999999"  oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" name="price_used_product" [ngClass]="{ 'is-invalid': submitted && f.price_used_product.errors }" class="input-material">
-                            <div *ngIf="submitted && f.price_used_product.errors" class="invalid-feedback">
-                              <div *ngIf="f.price_used_product.errors.max">Price - Used Product should be in range of 0 - 999999999</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <div class="col-md-4 p-3">
-                            <label for="price_sold_product" class="label-material">PRICE - SOLD PRODUCT :</label>
-                          </div>
-                          <div class="col-md-8">
-                            <input type="number" formControlName="price_sold_product" min="0" max="99999999"  oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" name="price_sold_product" [ngClass]="{ 'is-invalid': submitted && f.price_sold_product.errors }" class="input-material">
-                            <div *ngIf="submitted && f.price_sold_product.errors" class="invalid-feedback">
-                              <div *ngIf="f.price_sold_product.errors.max">Price - Sold Product should be in range of 0 - 999999999</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row"  *ngFor="let doc of productInfo?.productdocs; index as i">
-                          <div class="col-md-6 p-3" style="font-size: 12px;">
-                            <label for="billing_postal_area" class="label-material margin-left">{{doc?.file_name}}&nbsp;&nbsp;{{doc?.product_category?.category_name}}</label>&nbsp;&nbsp;&nbsp;
-                            <label><a href="javascript:void();" (click)="deletedoc(doc.id)"><i class="fa fa-trash" aria-hidden="true"></i></a></label>
-                          </div>
-                        </div>
-                        <div class="form-group row"   *ngFor="let file of filesmulti; index as i">
-                          <div class="col-md-6 p-3" style="font-size: 12px;">
-                            <label for="billing_postal_area" class="label-material margin-left">{{file.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{filecattext[i]}} </label>&nbsp;&nbsp;&nbsp;
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_used_product" class="label-material"
+                          >PRICE - USED PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="price_used_product"
+                          min="0"
+                          max="99999999"
+                          oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                          name="price_used_product"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.price_used_product.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.price_used_product.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.price_used_product.errors.max">
+                            Price - Used Product should be in range of 0 -
+                            999999999
                           </div>
                         </div>
                       </div>
                     </div>
-                  </form>
-              <hr>
+                    <div class="form-group row">
+                      <div class="col-md-4 p-3">
+                        <label for="price_sold_product" class="label-material"
+                          >PRICE - SOLD PRODUCT :</label
+                        >
+                      </div>
+                      <div class="col-md-8">
+                        <input
+                          type="number"
+                          formControlName="price_sold_product"
+                          min="0"
+                          max="99999999"
+                          oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+                          name="price_sold_product"
+                          [ngClass]="{
+                            'is-invalid':
+                              submitted && f.price_sold_product.errors
+                          }"
+                          class="input-material"
+                        />
+                        <div
+                          *ngIf="submitted && f.price_sold_product.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.price_sold_product.errors.max">
+                            Price - Sold Product should be in range of 0 -
+                            999999999
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                      *ngFor="let doc of productInfo?.productdocs; index as i"
+                    >
+                      <div class="col-md-6 p-3" style="font-size: 12px">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          >{{ doc?.file_name }}&nbsp;&nbsp;{{
+                            doc?.product_category?.category_name
+                          }}</label
+                        >&nbsp;&nbsp;&nbsp;
+                        <label
+                          ><a
+                            href="javascript:void();"
+                            (click)="deletedoc(doc.id)"
+                            ><i class="fa fa-trash" aria-hidden="true"></i></a
+                        ></label>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group row"
+                      *ngFor="let file of filesmulti; index as i"
+                    >
+                      <div class="col-md-6 p-3" style="font-size: 12px">
+                        <label
+                          for="billing_postal_area"
+                          class="label-material margin-left"
+                          >{{ file.name }}&nbsp;&nbsp;&nbsp;&nbsp;{{
+                            filecattext[i]
+                          }} </label
+                        >&nbsp;&nbsp;&nbsp;
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <hr />
             </div>
           </div>
         </div>
@@ -433,12 +960,24 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add Files</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -447,27 +986,56 @@
           <div class="col-md-3">
             <select class="form-control" name="categories" id="categories">
               <option value="">Select</option>
-              <option *ngFor="let category of projectcategories; index as i" value="{{category.id}}">{{category.category_name}}</option>
+              <option
+                *ngFor="let category of projectcategories; index as i"
+                value="{{ category.id }}"
+              >
+                {{ category.category_name }}
+              </option>
             </select>
           </div>
           <div class="col-md-9 row">
             <div class="col-md-7">
-              <input type="file" id="fileupload" name="fileupload" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" />
+              <input
+                type="file"
+                id="fileupload"
+                name="fileupload"
+                accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+              />
             </div>
             <div class="col-md-2">
-              <input type="button" name="add_files" id="add_files" value="Add Files" (click)="addcategory()"/>
+              <input
+                type="button"
+                name="add_files"
+                id="add_files"
+                value="Add Files"
+                (click)="addcategory()"
+              />
             </div>
           </div>
         </div>
         <div class="form-group" *ngFor="let file of filesmulti; index as i">
-          {{filecattext[i]}} &nbsp;&nbsp;&nbsp;&nbsp;{{file.name}} <span style="float: right;"><a href="javascript:void(0);" (click)="delete_add(i)">Delete</a></span>
+          {{ filecattext[i] }} &nbsp;&nbsp;&nbsp;&nbsp;{{ file.name }}
+          <span style="float: right"
+            ><a href="javascript:void(0);" (click)="delete_add(i)"
+              >Delete</a
+            ></span
+          >
           <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
         <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>
