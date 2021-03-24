@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class PriceDelimiterPipe implements PipeTransform {
   transform(value: any, margin: number): any {
     if (!margin) margin = 3;
-    //console.log(value, margin);
+    //console.log(value, margin)
     if (!value) return null;
     value = "" + value;
     if (value.length < 4) return value;
