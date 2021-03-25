@@ -151,7 +151,7 @@ export class ProductsComponent implements OnDestroy , OnInit {
                           return link;
                       }
               }
-          , { data: 'product_id', name : 'product_id' }, { data: 'product_name', name : 'product_name'}, { name : 'product_categories.category_name', data: 'category_name'}, { data: 'price_new_product' }, { data: 'quantity' }, { data: 'dimention'}, { data: 'description'}, { data: 'status'}],
+          , { data: 'product_id', name : 'product_id' }, { data: 'product_name', name : 'product_name'}, { name : 'product_categories.category_name', data: 'category_name'}, { data: 'price_used_product' }, { data: 'quantity' }, { data: 'dimention'}, { data: 'description'}, { data: 'status'}],
           rowCallback: (row: Node, data: any[] | Object, index: number) => {
               $('.redirect', row).unbind('click');
               $('.redirect', row).bind('click', (event) => {
