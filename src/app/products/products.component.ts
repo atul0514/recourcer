@@ -242,7 +242,41 @@ export class ProductsComponent implements OnDestroy, OnInit {
       this.filterFlag = false;
     }
   }
-
+  removeFilter(type, filter) {
+    if (type == "proj") {
+      this.project_filter_text = this.project_filter_text.filter(function (s) {
+        return s != filter;
+      });
+      let id = -1;
+      Object.keys(this.projects).forEach((key) => {
+        const arr = this.projects[key];
+        arr.forEach((elm) => {
+          //console.log(filter);
+          //console.log(elm.project_name); // == filter);
+          if (elm.project_name.trim() == filter.trim()) id = elm.id;
+        });
+      });
+      this.project_filter = this.project_filter.filter(function (s) {
+        return s != id;
+      });
+    }
+    if (type == "stat") {
+      console.log(this.status_types);
+      this.status_filter_text = this.status_filter_text.filter(function (s) {
+        return s != filter;
+      });
+      let id = -1;
+      this.status_types.forEach((status) => {
+        if (status.name == filter.trim()) {
+          id = status.id;
+        }
+      });
+      this.status_filter = this.status_filter.filter(function (s) {
+        return s != id;
+      });
+    }
+    this.applyFilter();
+  }
   search(value) {
     this.listView = true;
     this.gridView = false;

@@ -28,28 +28,51 @@
                   placeholder="Search"
                   (input)="search($event.target.value)"
                 />
-
-                <p class="searchkey-paras" *ngIf="showSearchKeys">
-                  Results for:
+                <p class="searchkey-paras py-5" *ngIf="showSearchKeys">
                   <small
                     *ngIf="customer_filter_text.length > 0"
-                    class="search-texts"
-                    >customers:{{ customer_filter_text.join(",") }}</small
-                  >
+                    class="search-texts d-none pr-3"
+                    >Customers:<span
+                      *ngFor="let filter of customer_filter_text"
+                      class="px-2"
+                      >{{ filter }}
+                      <span (click)="removeFilter('cust', filter)">x</span
+                      >,</span
+                    >
+                  </small>
                   <small
                     *ngIf="project_filter_text.length > 0"
                     class="search-texts"
-                    >projects:{{ project_filter_text.join(",") }}
+                    >Projects:<span
+                      *ngFor="let filter of project_filter_text"
+                      class="px-2"
+                      >{{ filter }}
+                      <span (click)="removeFilter('proj', filter)">x</span
+                      >,</span
+                    >
                   </small>
                   <small
                     *ngIf="category_filter_text.length > 0"
-                    class="search-texts"
-                    >category:{{ category_filter_text.join(",") }}</small
-                  ><small
+                    class="search-texts d-none"
+                    >Category:<span
+                      *ngFor="let filter of category_filter_text"
+                      class="px-2"
+                      >{{ filter }}
+                      <span (click)="removeFilter('cat', filter)">x</span
+                      >,</span
+                    ></small
+                  ><br />
+                  <small
                     *ngIf="status_filter_text.length > 0"
-                    class="search-texts"
-                    >status:{{ status_filter_text.join(",") }}</small
-                  >
+                    class="search-texts pr-3"
+                    >Status:<span
+                      *ngFor="let filter of status_filter_text"
+                      class="px-2"
+                      >{{ filter }}
+                      <span (click)="removeFilter('stat', filter)">x</span
+                      >,</span
+                    >
+                  </small>
                 </p>
               </div>
             </div>
@@ -275,7 +298,7 @@
               >
                 <thead>
                   <tr>
-                    <th style="background: unset;">
+                    <th style="background: unset">
                       <div class="round">
                         <input
                           type="checkbox"
